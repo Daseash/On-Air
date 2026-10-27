@@ -1,14 +1,8 @@
 {
   "version": 2,
-  "name": "on-air",
   "functions": {
     "api/index.js": {
-      "includeFiles": [
-        "views/**",
-        "init/**",
-        "public/**",
-        "rag/data/**"
-      ],
+      "includeFiles": "{views/**,init/**,public/**,rag/data/**}",
       "maxDuration": 30
     }
   },

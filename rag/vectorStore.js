@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { v4: uuid } = require('uuid');
+const { randomUUID: uuid } = require('crypto');
 const { VECTOR_STORE_PATH } = require('./config');
 const { cosineSimilarity } = require('./scoring');
 
