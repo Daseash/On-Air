@@ -52,11 +52,16 @@ app.set("views", path.resolve(process.cwd(), "views"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.resolve(process.cwd(), "public")));
-app.use(cookieParser(process.env.SESSION_SECRET || "wanderlustsecretkey"));
+const sessionSecret = (process.env.SESSION_SECRET && process.env.SESSION_SECRET.trim()) || "onairsupersecretkey2026";
+app.use(cookieParser(sessionSecret));
+app.use((req, res, next) => {
+  if (!req.secret) req.secret = sessionSecret;
+  next();
+});
 
 // Session Middleware & Cookie Options Configuration
 const sessionOptions = {
-  secret: process.env.SESSION_SECRET || "wanderlustsecretkey",
+  secret: sessionSecret,
   resave: false,
   saveUninitialized: true,
   cookie: {
