@@ -89,6 +89,7 @@
           </div>
           <a href="/bookings"><i class="fa-solid fa-suitcase me-2"></i> My Trips</a>
           <a href="/wishlist"><i class="fa-regular fa-heart me-2"></i> Wishlist</a>
+          <a href="/change-password"><i class="fa-solid fa-key me-2"></i> Change Password</a>
           <hr />
           <a href="/logout"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Log out</a>
           <% } else { %>
@@ -110,6 +111,7 @@
     <% if (typeof currentUser !== 'undefined' && currentUser) { %>
     <a href="/bookings">My Trips</a>
     <a href="/wishlist">Wishlist</a>
+    <a href="/change-password">Change Password</a>
     <a href="/logout">Log out</a>
     <% } else { %>
     <a href="/login">Log in</a>

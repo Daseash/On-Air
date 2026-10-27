@@ -3,7 +3,7 @@ const router = express.Router();
 const passport = require("passport");
 const wrapAsync = require("../utils/wrapAsync.js");
 const userController = require("../controllers/users.js");
-const { validateUser, saveRedirectUrl } = require("../middlewares");
+const { validateUser, saveRedirectUrl, isLoggedIn } = require("../middlewares");
 
 // Signup Route (GET & POST)
 router
@@ -24,9 +24,17 @@ router
     wrapAsync(userController.login)
   );
 
-// OTP Routes for fast verification
-router.post("/send-otp", wrapAsync(userController.sendOtp));
-router.post("/verify-otp", wrapAsync(userController.verifyOtp));
+// Change Password Route (Authenticated)
+router
+  .route("/change-password")
+  .get(isLoggedIn, userController.renderChangePasswordForm)
+  .post(isLoggedIn, wrapAsync(userController.changePassword));
+
+// Reset Password Route (Unauthenticated)
+router
+  .route("/reset-password")
+  .get(userController.renderResetPasswordForm)
+  .post(wrapAsync(userController.resetPassword));
 
 // Logout Route
 router.get("/logout", userController.logout);

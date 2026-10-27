@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const User = require("../models/user.js");
 const { login, logout } = require("../utils/auth.js");
-const { sendOtpNotification } = require("../utils/mailer.js");
 
 // Render Signup Form
 module.exports.renderSignupForm = (req, res) => {
@@ -77,121 +76,91 @@ module.exports.login = async (req, res) => {
   res.redirect(redirectUrl);
 };
 
-// Generate & Send OTP
-module.exports.sendOtp = async (req, res) => {
-  let { email, phone } = req.body;
-
-  if (!email || !phone) {
-    return res.status(400).json({
-      success: false,
-      message: "Both Email address and Phone number are required.",
-    });
-  }
-
-  email = email.trim().toLowerCase();
-  phone = phone.trim();
-
-  if (!email.includes("@") || !email.includes(".")) {
-    return res.status(400).json({
-      success: false,
-      message: "Please enter a valid email address.",
-    });
-  }
-
-  if (phone.replace(/\D/g, "").length < 7) {
-    return res.status(400).json({
-      success: false,
-      message: "Please enter a valid phone number.",
-    });
-  }
-
-  const code = Math.floor(100000 + Math.random() * 900000).toString();
-  const otpExpires = new Date(Date.now() + 10 * 60 * 1000);
-
-  let user = await User.findOne({ $or: [{ email }, { phone }] });
-
-  if (!user) {
-    let baseUsername = email.split("@")[0].replace(/[^a-zA-Z0-9]/g, "");
-    if (!baseUsername) baseUsername = "user";
-    let username = baseUsername;
-    let counter = 1;
-    while (await User.findOne({ username })) {
-      username = `${baseUsername}${counter++}`;
-    }
-
-    user = new User({
-      email,
-      phone,
-      username,
-      otp: code,
-      otpExpires,
-    });
-    await User.register(user, Math.random().toString(36).slice(-8));
-  } else {
-    user.email = email;
-    user.phone = phone;
-    user.otp = code;
-    user.otpExpires = otpExpires;
-    await user.save();
-  }
-
-  await sendOtpNotification({ email, phone, otp: code });
-
-  res.json({
-    success: true,
-    message: `A 6-digit verification code has been dispatched to ${email} and ${phone}.`,
-    email,
-    phone,
+// Render Change Password Form
+module.exports.renderChangePasswordForm = (req, res) => {
+  res.render("users/change-password.ejs", {
+    pageTitle: "Change Password — On Air",
   });
 };
 
-// Verify OTP & Sign In
-module.exports.verifyOtp = async (req, res, next) => {
-  let { email, phone, otp, next: nextUrl } = req.body;
-  if ((!email && !phone) || !otp) {
-    return res.status(400).json({
-      success: false,
-      message: "Email/Phone and 6-digit OTP are required.",
-    });
+// Process Change Password (Authenticated)
+module.exports.changePassword = async (req, res) => {
+  try {
+    const { oldPassword, newPassword, confirmPassword } = req.body;
+    if (!oldPassword || !newPassword || !confirmPassword) {
+      req.flash("error", "All fields are required.");
+      return res.redirect("/change-password");
+    }
+    if (newPassword !== confirmPassword) {
+      req.flash("error", "New passwords do not match.");
+      return res.redirect("/change-password");
+    }
+    if (newPassword.length < 6) {
+      req.flash("error", "New password must be at least 6 characters.");
+      return res.redirect("/change-password");
+    }
+
+    const userId = req.user ? req.user._id : null;
+    const user = await User.findById(userId).select("+hash +salt");
+    if (!user) {
+      req.flash("error", "User not found. Please log in again.");
+      return res.redirect("/login");
+    }
+
+    await user.changePassword(oldPassword, newPassword);
+    await user.save();
+
+    req.flash("success", "Password updated successfully in database!");
+    res.redirect("/listings");
+  } catch (err) {
+    req.flash("error", err.message || "Failed to update password. Check your current password.");
+    res.redirect("/change-password");
   }
+};
 
-  email = (email || "").trim().toLowerCase();
-  phone = (phone || "").trim();
-  otp = otp.trim();
-
-  let query = [];
-  if (email) query.push({ email });
-  if (phone) query.push({ phone });
-
-  let user = await User.findOne({ $or: query });
-
-  if (!user || !user.otp || user.otp !== otp) {
-    return res.status(400).json({
-      success: false,
-      message: "Invalid OTP code. Please check and try again.",
-    });
-  }
-
-  if (user.otpExpires && new Date() > new Date(user.otpExpires)) {
-    return res.status(400).json({
-      success: false,
-      message: "OTP code has expired. Please request a new OTP.",
-    });
-  }
-
-  user.otp = null;
-  user.otpExpires = null;
-  await user.save();
-
-  login(res, user._id);
-  req.login(user, (err) => {
-    if (err) return next(err);
-    res.json({
-      success: true,
-      message: "Authentication successful!",
-      redirectUrl: nextUrl || "/listings",
-    });
+// Render Reset Password Form
+module.exports.renderResetPasswordForm = (req, res) => {
+  res.render("users/reset-password.ejs", {
+    pageTitle: "Reset Password — On Air",
   });
+};
+
+// Process Reset Password (Unauthenticated)
+module.exports.resetPassword = async (req, res) => {
+  try {
+    const { identifier, newPassword, confirmPassword } = req.body;
+    if (!identifier || !newPassword || !confirmPassword) {
+      req.flash("error", "All fields are required.");
+      return res.redirect("/reset-password");
+    }
+    if (newPassword !== confirmPassword) {
+      req.flash("error", "New passwords do not match.");
+      return res.redirect("/reset-password");
+    }
+    if (newPassword.length < 6) {
+      req.flash("error", "New password must be at least 6 characters.");
+      return res.redirect("/reset-password");
+    }
+
+    const cleanId = identifier.trim().toLowerCase();
+    const user = await User.findOne({
+      $or: [{ username: cleanId }, { email: cleanId }],
+    }).select("+hash +salt");
+
+    if (!user) {
+      req.flash("error", "No user found with that username or email.");
+      return res.redirect("/reset-password");
+    }
+
+    await user.setPassword(newPassword);
+    await user.save();
+
+    req.flash("success", "Password reset successfully! Please sign in with your new password.");
+    res.redirect("/login");
+  } catch (err) {
+    req.flash("error", err.message || "Failed to reset password.");
+    res.redirect("/reset-password");
+  }
 };
 
 // Logout

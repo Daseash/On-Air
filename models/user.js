@@ -19,14 +19,6 @@ const userSchema = new Schema({
     trim: true,
     default: "",
   },
-  otp: {
-    type: String,
-    default: null,
-  },
-  otpExpires: {
-    type: Date,
-    default: null,
-  },
   wishlist: [
     {
       type: Schema.Types.ObjectId,
