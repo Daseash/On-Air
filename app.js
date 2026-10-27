@@ -14,7 +14,7 @@ const User = require("./models/user.js");
 const Listing = require("./models/listing.js");
 const inMemoryStore = require("./utils/inMemoryStore.js");
 const wrapAsync = require("./utils/wrapAsync.js");
-const { getSessionUserId, attachCsrf, csrfProtect } = require("./utils/auth.js");
+const { getSessionUser, getSessionUserId, attachCsrf, csrfProtect } = require("./utils/auth.js");
 const ExpressError = require("./utils/ExpressError.js");
 
 const cors = require("cors");
@@ -95,13 +95,16 @@ app.use(async (req, res, next) => {
   if (req.user) {
     res.locals.currentUser = req.user;
   } else {
-    const uid = getSessionUserId(req) || (req.session && req.session.userId);
+    const sessionUser = getSessionUser(req);
+    const uid = sessionUser ? sessionUser.uid : (req.session && req.session.userId);
     if (uid && mongoose.connection.readyState === 1) {
       try {
         res.locals.currentUser = await User.findById(uid).select("-password").lean();
       } catch {
-        res.locals.currentUser = null;
+        res.locals.currentUser = sessionUser || null;
       }
+    } else if (sessionUser) {
+      res.locals.currentUser = sessionUser;
     } else {
       res.locals.currentUser = null;
     }

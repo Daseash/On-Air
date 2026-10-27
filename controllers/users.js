@@ -34,13 +34,21 @@ module.exports.signup = async (req, res, next) => {
       };
     }
 
-    login(res, registeredUser._id);
-    req.login(registeredUser, (err) => {
-      if (err) return next(err);
+    login(res, registeredUser._id, registeredUser.username);
+    if (req.login) {
+      req.login(registeredUser, (err) => {
+        if (err) {
+          console.warn("Passport serialize notice:", err.message);
+        }
+        req.flash("success", "Welcome to On Air!");
+        let redirectUrl = res.locals.redirectUrl || req.body.next || "/listings";
+        res.redirect(redirectUrl);
+      });
+    } else {
       req.flash("success", "Welcome to On Air!");
       let redirectUrl = res.locals.redirectUrl || req.body.next || "/listings";
       res.redirect(redirectUrl);
-    });
+    }
   } catch (e) {
     req.flash("error", e.message);
     res.redirect("/signup");
@@ -54,14 +62,14 @@ module.exports.renderLoginForm = (req, res) => {
   }
   res.render("users/login.ejs", {
     pageTitle: "Sign In — On Air",
-    next: req.session.redirectUrl || req.query.next || "",
+    next: (req.session && req.session.redirectUrl) || req.query.next || "",
   });
 };
 
 // Process Login
 module.exports.login = async (req, res) => {
   if (req.user) {
-    login(res, req.user._id);
+    login(res, req.user._id, req.user.username);
   }
   req.flash("success", "Welcome back to On Air!");
   let redirectUrl = res.locals.redirectUrl || req.body.next || "/listings";

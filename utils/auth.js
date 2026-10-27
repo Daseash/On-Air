@@ -25,9 +25,13 @@ function verifyPassword(password, stored) {
 }
 
 // ---------- Sessions (signed cookie = HMAC-authenticated payload) ----------
-function login(res, userId) {
+function login(res, userId, username = '') {
   const payload = Buffer.from(
-    JSON.stringify({ uid: String(userId), exp: Date.now() + SESSION_TTL_MS }),
+    JSON.stringify({
+      uid: String(userId),
+      username: String(username || ''),
+      exp: Date.now() + SESSION_TTL_MS,
+    }),
   ).toString('base64url');
   res.cookie(SESSION_COOKIE, payload, {
     signed: true,
@@ -41,7 +45,7 @@ function logout(res) {
   res.clearCookie(SESSION_COOKIE);
 }
 
-function getSessionUserId(req) {
+function getSessionUser(req) {
   let raw = req.signedCookies && req.signedCookies[SESSION_COOKIE];
   if (!raw || raw === true) {
     raw = req.cookies && req.cookies[SESSION_COOKIE];
@@ -54,10 +58,15 @@ function getSessionUserId(req) {
   try {
     const data = JSON.parse(Buffer.from(raw, 'base64url').toString('utf8'));
     if (!data.uid || !data.exp || data.exp < Date.now()) return null;
-    return data.uid;
+    return { _id: data.uid, uid: data.uid, username: data.username || 'pilot' };
   } catch {
     return null;
   }
+}
+
+function getSessionUserId(req) {
+  const user = getSessionUser(req);
+  return user ? user.uid : null;
 }
 
 // ---------- CSRF (double submit token pattern resilient to serverless cold-starts) ----------
@@ -93,6 +102,7 @@ module.exports = {
   verifyPassword,
   login,
   logout,
+  getSessionUser,
   getSessionUserId,
   attachCsrf,
   csrfProtect,
