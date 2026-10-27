@@ -78,11 +78,20 @@ module.exports.isReviewAuthor = async (req, res, next) => {
 };
 
 module.exports.validateListing = (req, res, next) => {
+  const redirectUrl = req.params && req.params.id ? `/listings/${req.params.id}/edit` : "/listings/new";
   if (!req.body || !req.body.listing) {
+    if (req.flash) {
+      req.flash("error", "Please provide valid listing information.");
+      return res.redirect(redirectUrl);
+    }
     throw new ExpressError(400, "Send valid data for listing");
   }
   const { title, price, location, country } = req.body.listing;
   if (!title || !price || !location || !country) {
+    if (req.flash) {
+      req.flash("error", "Title, price, location, and country are required.");
+      return res.redirect(redirectUrl);
+    }
     throw new ExpressError(400, "Title, price, location, and country are required.");
   }
   next();

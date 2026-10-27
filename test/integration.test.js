@@ -191,3 +191,13 @@ test("RAG route validates input", async () => {
   });
   assert.strictEqual(res.status, 400);
 });
+
+test("listing validation gracefully redirects back to new listing form if required fields are missing", async () => {
+  const tok = csrfFrom(await (await request("/signup")).text());
+  const res = await request("/listings", {
+    method: "POST",
+    body: `listing[title]=OnlyTitle&_csrf=${encodeURIComponent(tok)}`,
+  });
+  assert.strictEqual(res.status, 302);
+  assert.strictEqual(res.headers.get("location"), "/listings/new");
+});
