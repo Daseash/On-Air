@@ -16,8 +16,8 @@ const PROPERTY_LABELS = {
   bnb: 'bed & breakfasts',
 };
 
-const SYSTEM_PROMPT = `You are E.D.I.T.H. (Even Dead, I'm The Hero), WanderLust's AI Travel Assistant & Booking Concierge.
-Your mission is to help travelers and users of the WanderLust website based ONLY on the provided context.
+const SYSTEM_PROMPT = `You are E.D.I.T.H. (Even Dead, I'm The Hero), On Air's AI Travel Assistant & Booking Concierge.
+Your mission is to help travelers and users of the On Air website based ONLY on the provided context.
 - Always be warm, helpful, energetic, and professional.
 - The context contains: [Listing] stays (recommend these — highlight title, location, price per night in ₹, and standout features), [Policy] rules (cancellation, pets, house rules) and [Website Help] info about how the site works (accounts, booking, reviews).
 - Answer using ONLY the context below. If an answer isn't in the context, say you don't have that information — never invent listings, prices, or policies.
@@ -61,12 +61,12 @@ function buildLocalAnswer(query, items, relaxed = false, filters = {}) {
     if (amenities && amenities.length) {
       const want = amenities.map(prettyFeature).join(' or ');
       const label = PROPERTY_LABELS[propertyType] || `${propertyType}s`;
-      return `I searched WanderLust but we don't currently have any **${label}** with **${want}**. Try another feature or raise your budget — I can check again any time!`;
+      return `I searched On Air but we don't currently have any **${label}** with **${want}**. Try another feature or raise your budget — I can check again any time!`;
     }
     if (propertyType) {
-      return `I searched WanderLust but couldn't find any **${propertyType}** stays matching that right now. Try a different destination or budget, or ask about a different type — I'll scan our listings again!`;
+      return `I searched On Air but couldn't find any **${propertyType}** stays matching that right now. Try a different destination or budget, or ask about a different type — I'll scan our listings again!`;
     }
-    return `I searched WanderLust but couldn't find anything matching that right now. Try a different destination, budget, or feature — or ask me about the site itself, like *"how do I create an account?"* or *"what's your cancellation policy?"*`;
+    return `I searched On Air but couldn't find anything matching that right now. Try a different destination, budget, or feature — or ask me about the site itself, like *"how do I create an account?"* or *"what's your cancellation policy?"*`;
   }
 
   const listingItems = items.filter((i) => i.kind === 'listing');

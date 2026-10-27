@@ -172,7 +172,7 @@ module.exports.showListing = async (req, res) => {
   await attachRatings(similar);
 
   res.render("listings/show", {
-    pageTitle: `${Listing.title} — ${Listing.location}, ${Listing.country} | Voyager`,
+    pageTitle: `${Listing.title} — ${Listing.location}, ${Listing.country} | On Air`,
     Listing,
     bookedRanges,
     wishlistSet,

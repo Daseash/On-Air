@@ -23,12 +23,12 @@ function detectIntent(question) {
 
 const CANNED_ANSWERS = {
   greeting:
-    "Hi! 👋 I'm **E.D.I.T.H.** — WanderLust's AI travel concierge.\n\nI can help you with:\n• Finding stays — try *\"villa with a pool in Phuket\"*, *\"cabin under ₹1500\"* or *\"beachfront stay in Bali\"*\n• Our policies — *\"what's your cancellation policy?\"*\n• How the site works — *\"how do I create an account?\"* or *\"how do reviews work?\"*\n\nWhat are you looking for today?",
+    "Hi! 👋 I'm **E.D.I.T.H.** — On Air's AI travel concierge.\n\nI can help you with:\n• Finding stays — try *\"villa with a pool in Phuket\"*, *\"cabin under ₹1500\"* or *\"beachfront stay in Bali\"*\n• Our policies — *\"what's your cancellation policy?\"*\n• How the site works — *\"how do I create an account?\"* or *\"how do reviews work?\"*\n\nWhat are you looking for today?",
   thanks: "You're most welcome! 😊 Tap me anytime you need a stay recommendation or have a question — happy travels! ✈️",
   help:
-    "I'm here to answer anything about **WanderLust** — finding stays or understanding the site.\n\n**Try asking me things like:**\n• \"Find a luxury beachfront villa\"\n• \"stays under ₹1500 in Goa\"\n• \"places with a pool near the mountains\"\n• \"what's your pet policy?\"\n• \"can I cancel my booking?\"\n• \"how do I leave a review?\" or \"how do I create an account?\"\n\nFire away! 🔥",
+    "I'm here to answer anything about **On Air** — finding stays or understanding the site.\n\n**Try asking me things like:**\n• \"Find a luxury beachfront villa\"\n• \"stays under ₹1500 in Goa\"\n• \"places with a pool near the mountains\"\n• \"what's your pet policy?\"\n• \"can I cancel my booking?\"\n• \"how do I leave a review?\" or \"how do I create an account?\"\n\nFire away! 🔥",
   offtopic:
-    "Hmm, that's outside my knowledge — I'm **E.D.I.T.H.**, the WanderLust concierge, and I only know about *our stays, policies, and how the site works*. 🌍\n\nTry something like *\"villa with a pool\"*, *\"what's your cancellation policy?\"*, or *\"how do I book a stay?\"*.",
+    "Hmm, that's outside my knowledge — I'm **E.D.I.T.H.**, the On Air concierge, and I only know about *our stays, policies, and how the site works*. 🌍\n\nTry something like *\"villa with a pool\"*, *\"what's your cancellation policy?\"*, or *\"how do I book a stay?\"*.",
   empty: 'Say "hello" or ask me something like *"find me a villa with a pool"* and I\'ll get searching!',
 };
 

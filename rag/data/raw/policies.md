@@ -1,4 +1,4 @@
-# WanderLust Policies & FAQs
+# On Air Policies & FAQs
 
 ## Cancellation Policy
 - **Free cancellation** is available for all stays up to **48 hours** before check-in.

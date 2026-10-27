@@ -99,7 +99,7 @@ async function tripsResponse(question, userId) {
   if (!userId) {
     return {
       answer:
-        "I'd love to check that for you! **Log in** to your WanderLust account (top-right menu) and I'll be able to pull up your trips. 😊",
+        "I'd love to check that for you! **Log in** to your On Air account (top-right menu) and I'll be able to pull up your trips. 😊",
       listings: [],
       sources: [],
       degraded: true,

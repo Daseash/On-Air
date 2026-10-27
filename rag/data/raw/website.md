@@ -1,7 +1,7 @@
-# How WanderLust Works — Site Help
+# How On Air Works — Site Help
 
-## What is WanderLust?
-WanderLust is a travel & homestay booking platform. It lets travelers browse and book unique stays — beachfront cottages, mountain cabins, luxury villas, treehouses, castles and more — from hosts around the world. Prices are shown in Indian Rupees (₹).
+## What is On Air?
+On Air is a travel & homestay booking platform. It lets travelers browse and book unique stays — beachfront cottages, mountain cabins, luxury villas, treehouses, castles and more — from hosts around the world. Prices are shown in Indian Rupees (₹).
 
 ## Creating an Account
 - Go to the **Sign Up** page and enter a username, email and password.

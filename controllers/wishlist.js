@@ -18,7 +18,7 @@ module.exports.index = async (req, res) => {
     options: { sort: { _id: -1 } },
   });
   res.render("wishlist/index", {
-    pageTitle: "My Wishlist — WanderLust",
+    pageTitle: "My Wishlist — On Air",
     savedListings: userPopulated.wishlist || [],
   });
 };
