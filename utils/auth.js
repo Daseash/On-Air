@@ -24,17 +24,41 @@ function verifyPassword(password, stored) {
   return crypto.timingSafeEqual(test, expected);
 }
 
-// ---------- Sessions (signed cookie = HMAC-authenticated payload) ----------
+// ---------- Sessions (HMAC-authenticated stateless session token) ----------
+function getSecret() {
+  return process.env.SESSION_SECRET || 'onairsupersecretkey2026';
+}
+
+function signSession(data) {
+  const json = JSON.stringify(data);
+  const b64 = Buffer.from(json).toString('base64url');
+  const sig = crypto.createHmac('sha256', getSecret()).update(b64).digest('base64url');
+  return `${b64}.${sig}`;
+}
+
+function verifySession(token) {
+  if (!token || typeof token !== 'string') return null;
+  const parts = token.split('.');
+  if (parts.length !== 2) return null;
+  const [b64, sig] = parts;
+  const expectedSig = crypto.createHmac('sha256', getSecret()).update(b64).digest('base64url');
+  if (sig !== expectedSig) return null;
+  try {
+    const data = JSON.parse(Buffer.from(b64, 'base64url').toString('utf8'));
+    if (!data.uid || !data.exp || data.exp < Date.now()) return null;
+    return { _id: data.uid, uid: data.uid, username: data.username || 'pilot' };
+  } catch {
+    return null;
+  }
+}
+
 function login(res, userId, username = '') {
-  const payload = Buffer.from(
-    JSON.stringify({
-      uid: String(userId),
-      username: String(username || ''),
-      exp: Date.now() + SESSION_TTL_MS,
-    }),
-  ).toString('base64url');
-  res.cookie(SESSION_COOKIE, payload, {
-    signed: true,
+  const token = signSession({
+    uid: String(userId),
+    username: String(username || ''),
+    exp: Date.now() + SESSION_TTL_MS,
+  });
+  res.cookie(SESSION_COOKIE, token, {
     httpOnly: true,
     sameSite: 'lax',
     maxAge: SESSION_TTL_MS,
@@ -46,22 +70,12 @@ function logout(res) {
 }
 
 function getSessionUser(req) {
-  let raw = req.signedCookies && req.signedCookies[SESSION_COOKIE];
-  if (!raw || raw === true) {
-    raw = req.cookies && req.cookies[SESSION_COOKIE];
+  let token = (req.cookies && req.cookies[SESSION_COOKIE]) || (req.signedCookies && req.signedCookies[SESSION_COOKIE]);
+  if (!token || typeof token !== 'string') {
+    const m = (req.headers.cookie || '').match(/sess=([^;]+)/);
+    if (m) token = decodeURIComponent(m[1].startsWith('s:') ? m[1].slice(2) : m[1]);
   }
-  if (!raw || raw === true) {
-    const m = (req.headers.cookie || '').match(/sess=s%3A([^.]+)/) || (req.headers.cookie || '').match(/sess=([^;]+)/);
-    if (m) raw = decodeURIComponent(m[1].startsWith('s:') ? m[1].slice(2) : m[1]);
-  }
-  if (!raw) return null;
-  try {
-    const data = JSON.parse(Buffer.from(raw, 'base64url').toString('utf8'));
-    if (!data.uid || !data.exp || data.exp < Date.now()) return null;
-    return { _id: data.uid, uid: data.uid, username: data.username || 'pilot' };
-  } catch {
-    return null;
-  }
+  return verifySession(token);
 }
 
 function getSessionUserId(req) {
