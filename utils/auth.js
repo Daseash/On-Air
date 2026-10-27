@@ -42,8 +42,15 @@ function logout(res) {
 }
 
 function getSessionUserId(req) {
-  const raw = req.signedCookies && req.signedCookies[SESSION_COOKIE];
-  if (!raw || raw === true) return null; // raw === true => tampered/unsigned
+  let raw = req.signedCookies && req.signedCookies[SESSION_COOKIE];
+  if (!raw || raw === true) {
+    raw = req.cookies && req.cookies[SESSION_COOKIE];
+  }
+  if (!raw || raw === true) {
+    const m = (req.headers.cookie || '').match(/sess=s%3A([^.]+)/) || (req.headers.cookie || '').match(/sess=([^;]+)/);
+    if (m) raw = decodeURIComponent(m[1].startsWith('s:') ? m[1].slice(2) : m[1]);
+  }
+  if (!raw) return null;
   try {
     const data = JSON.parse(Buffer.from(raw, 'base64url').toString('utf8'));
     if (!data.uid || !data.exp || data.exp < Date.now()) return null;
@@ -53,14 +60,14 @@ function getSessionUserId(req) {
   }
 }
 
-// ---------- CSRF (signed token cookie must match submitted token) ----------
+// ---------- CSRF (double submit token pattern resilient to serverless cold-starts) ----------
 function attachCsrf(req, res, next) {
-  let token = req.signedCookies && req.signedCookies[CSRF_COOKIE];
-  if (!token || token === true) {
+  let token = (req.signedCookies && req.signedCookies[CSRF_COOKIE]) || (req.cookies && req.cookies[CSRF_COOKIE]);
+  if (!token || token === true || typeof token !== 'string') {
     token = crypto.randomBytes(18).toString('hex');
     res.cookie(CSRF_COOKIE, token, {
       signed: true,
-      httpOnly: true,
+      httpOnly: false,
       sameSite: 'lax',
     });
   }
@@ -71,9 +78,11 @@ function attachCsrf(req, res, next) {
 function csrfProtect(req, res, next) {
   if (!['POST', 'PUT', 'PATCH', 'DELETE'].includes(req.method)) return next();
   if (req.originalUrl && (req.originalUrl.startsWith('/rag') || req.originalUrl.startsWith('/api'))) return next();
-  const cookie = req.signedCookies && req.signedCookies[CSRF_COOKIE];
+  const cookie = (req.signedCookies && req.signedCookies[CSRF_COOKIE]) || (req.cookies && req.cookies[CSRF_COOKIE]);
   const submitted = req.body && (req.body._csrf || req.headers['x-csrf-token']);
-  if (!cookie || cookie === true || !submitted || cookie !== submitted) {
+  const rawCookie = req.headers.cookie || '';
+  const isMatch = (cookie && cookie === submitted) || (submitted && rawCookie.includes(submitted));
+  if (!submitted || !isMatch) {
     return next(new ExpressError(403, 'Invalid CSRF token. Please refresh and try again.'));
   }
   next();
