@@ -10,7 +10,8 @@ const { embedText: embedLocal } = require('../utils/embeddings');
  */
 class EmbeddingManager {
   constructor() {
-    this.useGemini = Boolean(GEMINI_API_KEY && String(GEMINI_API_KEY).trim());
+    const preferLocal = process.env.EMBEDDING_BACKEND === 'local' || process.env.USE_LOCAL_EMBEDDINGS === 'true';
+    this.useGemini = !preferLocal && Boolean(GEMINI_API_KEY && String(GEMINI_API_KEY).trim());
     if (this.useGemini) {
       const genAI = new GoogleGenerativeAI(String(GEMINI_API_KEY).trim());
       this.model = genAI.getGenerativeModel({ model: EMBEDDING_MODEL });

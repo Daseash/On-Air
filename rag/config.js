@@ -16,7 +16,7 @@ module.exports = {
     .filter(Boolean),
 
   // Gemini primary embedding model; falls back to a free local model when no key is set.
-  EMBEDDING_MODEL: process.env.EMBEDDING_MODEL || 'text-embedding-004',
+  EMBEDDING_MODEL: process.env.EMBEDDING_MODEL || 'gemini-embedding-001',
   EMBEDDING_MODEL_LOCAL: process.env.EMBEDDING_MODEL_NAME || 'Xenova/all-MiniLM-L6-v2',
 
   CHUNK_SIZE: int(process.env.CHUNK_SIZE, 500),
