@@ -121,7 +121,7 @@ module.exports.index = async (req, res) => {
 // Render New Listing Form Controller
 module.exports.renderNewForm = (req, res) => {
   res.render("listings/new", {
-    pageTitle: "Add a New Stay — Become a Host | WanderLust",
+    pageTitle: "Add a New Stay — Become a Host | On Air",
   });
 };
 

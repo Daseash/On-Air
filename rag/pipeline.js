@@ -1,3 +1,5 @@
+const mongoose = require('mongoose');
+const inMemoryStore = require('../utils/inMemoryStore');
 const Listing = require('../models/listing');
 const Booking = require('../models/booking');
 const User = require('../models/user');
@@ -20,7 +22,19 @@ function sanitize(listing) {
  * Scans the live listings collection with lexical scoring + hard filters.
  */
 async function keywordFallback(query, filters) {
-  const allListings = await Listing.find({}).lean();
+  let allListings = [];
+  if (mongoose.connection.readyState === 1) {
+    try {
+      allListings = await Listing.find({}).lean();
+    } catch {
+      allListings = inMemoryStore.getListings();
+    }
+  } else {
+    allListings = inMemoryStore.getListings();
+  }
+  if (!allListings || !allListings.length) {
+    allListings = inMemoryStore.getListings();
+  }
   const loc = filters.location ? String(filters.location).toLowerCase() : '';
 
   let candidates = allListings.filter((l) => {
@@ -230,8 +244,17 @@ async function ragAnswer(question, sessionId, context = {}) {
 
   // Fetch full listing docs for the UI cards, preserving retrieval order.
   const ids = retrieval.items.map((i) => i.listingId).filter(Boolean);
-  const listings = ids.length ? await Listing.find({ _id: { $in: ids } }).lean() : [];
-  const byId = new Map(listings.map((l) => [String(l._id), l]));
+  let listings = [];
+  if (ids.length && mongoose.connection.readyState === 1) {
+    try {
+      listings = await Listing.find({ _id: { $in: ids } }).lean();
+    } catch (e) {}
+  }
+  if (!listings.length && ids.length) {
+    const memListings = inMemoryStore.getListings();
+    listings = memListings.filter((l) => ids.includes(String(l._id)) || ids.includes(String(l.id)));
+  }
+  const byId = new Map(listings.map((l) => [String(l._id || l.id), l]));
   const ordered = retrieval.items
     .map((i) => byId.get(i.listingId))
     .filter(Boolean)

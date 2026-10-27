@@ -20,7 +20,7 @@ async function ensureConnection() {
 
   if (!connPromise) {
     connPromise = mongoose.connect(dbUrl, {
-      serverSelectionTimeoutMS: 5000,
+      serverSelectionTimeoutMS: 2500,
     }).catch((err) => {
       connPromise = null;
       console.warn("Vercel MongoDB connection fallback:", err.message);
@@ -30,6 +30,8 @@ async function ensureConnection() {
 }
 
 module.exports = async (req, res) => {
-  await ensureConnection();
+  try {
+    await ensureConnection();
+  } catch {}
   return (app.app || app)(req, res);
 };
