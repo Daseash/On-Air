@@ -2,6 +2,8 @@
 
 > **Next-Generation Vacation Rentals** — An AI-enhanced, full-stack vacation rental & stays platform leveraging **Retrieval-Augmented Generation (RAG)** for intelligent, context-aware property discovery.
 
+🌐 **Live Application:** [https://onair-five.vercel.app](https://onair-five.vercel.app)
+
 ---
 
 ## 🌟 Overview
