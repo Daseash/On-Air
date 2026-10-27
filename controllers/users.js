@@ -5,7 +5,7 @@ const { sendOtpNotification } = require("../utils/mailer.js");
 // Render Signup Form
 module.exports.renderSignupForm = (req, res) => {
   res.render("users/signup.ejs", {
-    pageTitle: "Sign Up — WanderLust",
+    pageTitle: "Sign Up — On Air",
     next: req.query.next || "",
   });
 };
@@ -27,7 +27,7 @@ module.exports.signup = async (req, res, next) => {
     login(res, registeredUser._id);
     req.login(registeredUser, (err) => {
       if (err) return next(err);
-      req.flash("success", "Welcome to WanderLust!");
+      req.flash("success", "Welcome to On Air!");
       let redirectUrl = res.locals.redirectUrl || req.body.next || "/listings";
       res.redirect(redirectUrl);
     });
@@ -43,7 +43,7 @@ module.exports.renderLoginForm = (req, res) => {
     req.session.redirectUrl = req.query.next;
   }
   res.render("users/login.ejs", {
-    pageTitle: "Sign In — WanderLust",
+    pageTitle: "Sign In — On Air",
     next: req.session.redirectUrl || req.query.next || "",
   });
 };
@@ -53,9 +53,9 @@ module.exports.login = async (req, res) => {
   if (req.user) {
     login(res, req.user._id);
   }
-  req.flash("success", "Welcome back to WanderLust!");
+  req.flash("success", "Welcome back to On Air!");
   let redirectUrl = res.locals.redirectUrl || req.body.next || "/listings";
-  delete req.session.redirectUrl;
+  if (req.session) delete req.session.redirectUrl;
   res.redirect(redirectUrl);
 };
 

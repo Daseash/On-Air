@@ -23,8 +23,8 @@ router.post('/ask', ragLimiter, async (req, res) => {
     const result = await ragAnswer(question, sessionId, { userId: getSessionUserId(req) });
     res.json(result);
   } catch (err) {
-    console.error('RAG route error:', err);
-    res.status(500).json({ error: 'Something went wrong processing your request. Please try again.' });
+    console.error('RAG route error:', err.stack || err);
+    res.status(500).json({ error: err.message || 'Something went wrong processing your request. Please try again.' });
   }
 });
 

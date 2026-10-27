@@ -197,7 +197,14 @@ async function ragAnswer(question, sessionId, context = {}) {
   const history = getHistory(sessionId);
   const reviewIntent = /reviews?|rating|what do (?:guests|people|travelers) (?:say|think)|feedback|comments about/i.test(question);
 
-  let retrieval;
+  if (vectorStore.size === 0 && vectorStore.exists()) {
+    try {
+      vectorStore.load();
+    } catch (e) {
+      console.warn('Could not auto-load vectorStore:', e.message);
+    }
+  }
+
   if (vectorStore.size > 0) {
     retrieval = await search.search(question, filters, history);
   } else {

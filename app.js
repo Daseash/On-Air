@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-mongoose.set("bufferCommands", false);
+// Buffer commands until connection is established
 const path = require("path");
 const ejsMate = require("ejs-mate");
 const cookieParser = require("cookie-parser");

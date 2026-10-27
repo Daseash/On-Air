@@ -1,18 +1,32 @@
 const ExpressError = require("../utils/ExpressError.js");
 const Listing = require("../models/listing.js");
 const Review = require("../models/review.js");
+const User = require("../models/user.js");
 const { getSessionUserId, csrfProtect } = require("../utils/auth.js");
 
 module.exports.csrfProtect = csrfProtect;
 
-// Middleware to check if user is authenticated via Passport req.isAuthenticated() method
-module.exports.isLoggedIn = (req, res, next) => {
-  if (!req.isAuthenticated || !req.isAuthenticated()) {
-    req.session.redirectUrl = req.originalUrl;
-    req.flash("error", "You must be logged in to create or modify a listing!");
-    return res.redirect("/login");
+// Middleware to check if user is authenticated via Passport or signed session cookie
+module.exports.isLoggedIn = async (req, res, next) => {
+  if (req.isAuthenticated && req.isAuthenticated()) {
+    return next();
   }
-  next();
+  const uid = getSessionUserId(req) || (req.session && req.session.userId);
+  if (uid) {
+    if (!req.user) {
+      try {
+        req.user = await User.findById(uid);
+      } catch (e) {}
+    }
+    if (req.user || uid) {
+      return next();
+    }
+  }
+  if (req.session) {
+    req.session.redirectUrl = req.originalUrl;
+  }
+  req.flash("error", "You must be logged in to proceed!");
+  return res.redirect("/login");
 };
 
 // Also export as requireLogin for backwards compatibility with existing route imports

@@ -1,19 +1,35 @@
 const mongoose = require("mongoose");
-const { app } = require("../app.js");
+const app = require("../app.js");
 
 const dbUrl = process.env.ATLASDB_URL || process.env.DB_URL || process.env.MONGODB_URI;
 
-module.exports = async (req, res) => {
-  // Ensure connection in serverless environment
-  if (dbUrl && mongoose.connection.readyState !== 1) {
-    try {
-      await mongoose.connect(dbUrl, {
-        serverSelectionTimeoutMS: 5000,
-      });
-    } catch (err) {
-      console.warn("Vercel MongoDB connection fallback:", err.message);
-    }
+let connPromise = null;
+
+async function ensureConnection() {
+  if (mongoose.connection.readyState === 1) return;
+  if (!dbUrl) return;
+
+  if (mongoose.connection.readyState === 2) {
+    await new Promise((resolve) => {
+      mongoose.connection.once("open", resolve);
+      mongoose.connection.once("error", resolve);
+      setTimeout(resolve, 3000);
+    });
+    return;
   }
 
-  return app(req, res);
+  if (!connPromise) {
+    connPromise = mongoose.connect(dbUrl, {
+      serverSelectionTimeoutMS: 5000,
+    }).catch((err) => {
+      connPromise = null;
+      console.warn("Vercel MongoDB connection fallback:", err.message);
+    });
+  }
+  await connPromise;
+}
+
+module.exports = async (req, res) => {
+  await ensureConnection();
+  return (app.app || app)(req, res);
 };
