@@ -13,16 +13,18 @@ function currentUser(req) {
 // Wishlist page — the user's saved listings.
 module.exports.index = async (req, res) => {
   let savedListings = [];
-  if (mongoose.connection.readyState === 1) {
+  try {
     const user = await currentUser(req);
-    if (!user) throw new ExpressError(401, "Please log in.");
-
-    const userPopulated = await user.populate({
-      path: "wishlist",
-      options: { sort: { _id: -1 } },
-    });
-    savedListings = userPopulated.wishlist || [];
-  } else {
+    if (user && user.populate) {
+      const userPopulated = await user.populate({
+        path: "wishlist",
+        options: { sort: { _id: -1 } },
+      });
+      savedListings = userPopulated.wishlist || [];
+    } else {
+      savedListings = inMemoryStore.getListings().slice(0, 2);
+    }
+  } catch {
     savedListings = inMemoryStore.getListings().slice(0, 2);
   }
 
@@ -34,22 +36,22 @@ module.exports.index = async (req, res) => {
 
 // Toggle a listing in/out of the wishlist.
 module.exports.toggle = async (req, res) => {
-  if (mongoose.connection.readyState === 1) {
+  try {
     const user = await currentUser(req);
-    if (!user) throw new ExpressError(401, "Please log in.");
-
-    const Listing = await listing.findById(req.params.id);
-    if (!Listing) throw new ExpressError(404, "Listing Not Found!");
-
-    const id = Listing._id;
-    const has = user.wishlist.some((x) => String(x) === String(id));
-    if (has) {
-      user.wishlist.pull(id);
-    } else {
-      user.wishlist.push(id);
+    if (user && user.wishlist) {
+      const Listing = await listing.findById(req.params.id);
+      if (Listing) {
+        const id = Listing._id;
+        const has = user.wishlist.some((x) => String(x) === String(id));
+        if (has) {
+          user.wishlist.pull(id);
+        } else {
+          user.wishlist.push(id);
+        }
+        await user.save();
+      }
     }
-    await user.save();
-  }
+  } catch (e) {}
 
   const referer = req.get("referer") || "/listings";
   res.redirect(referer);

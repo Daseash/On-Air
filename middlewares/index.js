@@ -1,8 +1,9 @@
+const mongoose = require("mongoose");
 const ExpressError = require("../utils/ExpressError.js");
 const Listing = require("../models/listing.js");
 const Review = require("../models/review.js");
 const User = require("../models/user.js");
-const { getSessionUserId, csrfProtect } = require("../utils/auth.js");
+const { getSessionUser, getSessionUserId, csrfProtect } = require("../utils/auth.js");
 
 module.exports.csrfProtect = csrfProtect;
 
@@ -11,16 +12,20 @@ module.exports.isLoggedIn = async (req, res, next) => {
   if (req.isAuthenticated && req.isAuthenticated()) {
     return next();
   }
-  const uid = getSessionUserId(req) || (req.session && req.session.userId);
+  const sessionUser = getSessionUser(req);
+  const uid = sessionUser ? sessionUser.uid : (req.session && req.session.userId);
   if (uid) {
     if (!req.user) {
-      try {
-        req.user = await User.findById(uid);
-      } catch (e) {}
+      if (mongoose.connection.readyState === 1) {
+        try {
+          req.user = await User.findById(uid);
+        } catch (e) {}
+      }
+      if (!req.user) {
+        req.user = sessionUser || { _id: uid, username: "pilot", email: "pilot@onair.com" };
+      }
     }
-    if (req.user || uid) {
-      return next();
-    }
+    return next();
   }
   if (req.session) {
     req.session.redirectUrl = req.originalUrl;

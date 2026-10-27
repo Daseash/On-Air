@@ -126,7 +126,7 @@ module.exports.createBooking = async (req, res) => {
 // My Trips — the logged-in user's bookings (future = upcoming, rest = past).
 module.exports.myTrips = async (req, res) => {
   const uid = (req.user && req.user._id) || getSessionUserId(req);
-  if (!uid) throw new ExpressError(401, "Please log in.");
+  if (!uid) return res.redirect("/login");
 
   let bookings = [];
   if (mongoose.connection.readyState === 1) {
