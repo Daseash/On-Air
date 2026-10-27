@@ -155,19 +155,6 @@ body.skiper-active-dragging button {
   transform: scale(0.97);
 }
 
-/* Dark / Pixel mode styling */
-[data-theme="pixel"] .skiper-arrow {
-  background: #1e293b !important;
-  color: #f8fafc !important;
-  border-color: #334155 !important;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4) !important;
-}
-
-[data-theme="pixel"] .skiper-arrow:hover {
-  background: #0f172a !important;
-  color: #ffffff !important;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6) !important;
-}
 
 @media (max-width: 768px) {
   .skiper-arrow {

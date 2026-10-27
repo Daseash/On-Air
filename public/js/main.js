@@ -1,7 +1,6 @@
 /* WanderLust — front-end behaviour (search, filters, booking card) */
 
 document.addEventListener("DOMContentLoaded", () => {
-  initThemeSwitcher();
   initHeroSlideshow();
   initCancelTripModal();
   initMobileNav();
@@ -562,46 +561,6 @@ function guessUnavailable(checkin, checkout) {
   });
 }
 
-/* ═══════════════════════════════════════════
-   THEME SWITCHER: Lumina Modern vs. Pixel Escapes
-   ═══════════════════════════════════════════ */
-function initThemeSwitcher() {
-  const root = document.documentElement;
-  const toggleBtn = document.getElementById("theme-toggle-btn");
-  const mobileToggles = document.querySelectorAll(".mobile-theme-toggle");
-  const mobileLabels = document.querySelectorAll(".mobile-theme-label");
-
-  function applyTheme(theme) {
-    root.setAttribute("data-theme", theme);
-    localStorage.setItem("wanderlust_theme", theme);
-
-    if (toggleBtn) {
-      toggleBtn.setAttribute("data-theme-active", theme);
-    }
-    mobileLabels.forEach((lbl) => {
-      lbl.textContent = theme === "pixel" ? "Pixel Escapes 👾" : "Lumina Modern ✨";
-    });
-  }
-
-  const currentTheme = localStorage.getItem("wanderlust_theme") || "lumina";
-  applyTheme(currentTheme);
-
-  if (toggleBtn) {
-    toggleBtn.addEventListener("click", () => {
-      const active = root.getAttribute("data-theme") || "lumina";
-      const next = active === "pixel" ? "lumina" : "pixel";
-      applyTheme(next);
-    });
-  }
-
-  mobileToggles.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const active = root.getAttribute("data-theme") || "lumina";
-      const next = active === "pixel" ? "lumina" : "pixel";
-      applyTheme(next);
-    });
-  });
-}
 
 /* ═══════════════════════════════════════════
    5-SECOND HERO SLIDESHOW (STAYS FROM DATA.JS)
