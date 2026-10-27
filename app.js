@@ -20,8 +20,9 @@ const ExpressError = require("./utils/ExpressError.js");
 const cors = require("cors");
 
 // Optional non-blocking MongoDB connection
-if (process.env.ATLASDB_URL && mongoose.connection.readyState === 0) {
-  mongoose.connect(process.env.ATLASDB_URL, { serverSelectionTimeoutMS: 3000 }).catch((err) => {
+const dbConnStr = process.env.ATLASDB_URL || process.env.DB_URL || process.env.MONGODB_URI;
+if (dbConnStr && mongoose.connection.readyState === 0) {
+  mongoose.connect(dbConnStr, { serverSelectionTimeoutMS: 3000 }).catch((err) => {
     console.warn("MongoDB not connected, operating in standalone in-memory mode:", err.message);
   });
 }

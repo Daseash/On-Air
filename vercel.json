@@ -2,7 +2,13 @@
   "version": 2,
   "functions": {
     "api/index.js": {
-      "includeFiles": "{views/**,init/**}"
+      "includeFiles": [
+        "views/**",
+        "init/**",
+        "public/**",
+        "rag/data/**"
+      ],
+      "maxDuration": 30
     }
   },
   "rewrites": [
