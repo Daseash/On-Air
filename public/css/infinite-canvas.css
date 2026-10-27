@@ -7,7 +7,7 @@
   height: 600px;
   border-radius: 28px;
   overflow: hidden;
-  background: radial-gradient(circle at 50% 50%, #f4f6fa 0%, #e5eaf2 100%);
+  background: #f4f6fa;
   border: 1px solid var(--border-soft, rgba(0, 0, 0, 0.08));
   box-shadow: 0 20px 45px -15px rgba(0, 0, 0, 0.12), inset 0 0 0 1px rgba(255, 255, 255, 0.6);
   cursor: grab;
@@ -20,7 +20,7 @@
 
 [data-theme="noir"] .skiper73-canvas-wrapper,
 [data-theme="cyberpunk"] .skiper73-canvas-wrapper {
-  background: radial-gradient(circle at 50% 50%, #1a1e27 0%, #0d1016 100%);
+  background: #0d1016;
   border-color: rgba(255, 255, 255, 0.1);
   box-shadow: 0 20px 45px -15px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
 }
@@ -117,16 +117,16 @@
 }
 
 .skiper73-tile-pill i {
-  color: #ff385c;
+  color: #f59e0b;
   font-size: 0.75rem;
 }
 
-/* Bottom Information Gradient */
+/* Bottom Information Overlay */
 .skiper73-tile-overlay {
   position: absolute;
   inset: auto 0 0 0;
   padding: 30px 16px 14px;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.55) 45%, rgba(0, 0, 0, 0.88) 100%);
+  background: rgba(0, 0, 0, 0.75);
   color: #ffffff;
   display: flex;
   flex-direction: column;
@@ -186,8 +186,8 @@
 }
 
 .skiper73-tile:hover .skiper73-tile-cta {
-  background: #ff385c;
-  border-color: #ff385c;
+  background: #18181b;
+  border-color: #18181b;
   transform: translateX(2px);
 }
 
@@ -233,7 +233,7 @@
 }
 
 .skiper73-hint i {
-  color: #ff385c;
+  color: #18181b;
 }
 
 /* HUD Controls */

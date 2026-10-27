@@ -112,7 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
         '<div style="font-size: .78rem; color: #6a6a6a;">' +
         locationLine +
         "</div></div>" +
-        '<div style="font-weight: 700; color: #ff385c; font-size: .85rem; white-space: nowrap;">' +
+        '<div style="font-weight: 700; color: #18181b; font-size: .85rem; white-space: nowrap;">' +
         price +
         '<span style="font-size: .7rem; font-weight: 400; color: #6a6a6a;">/night</span></div>';
 
