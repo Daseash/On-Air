@@ -76,7 +76,7 @@ test("home and listings pages render", async () => {
   const home = await request("/");
   assert.strictEqual(home.status, 200);
   const homeHtml = await home.text();
-  assert.match(homeHtml, /Find a place to stay/);
+  assert.match(homeHtml, /Find Your Next Escape/);
 
   const index = await request("/listings");
   assert.strictEqual(index.status, 200);
@@ -128,9 +128,12 @@ test("signup → wishlist → booking → cancel flow works end to end", async (
   assert.strictEqual(wishlist.status, 200);
   assert.match(await wishlist.text(), /Test Lake House/);
 
+  const d1 = new Date(Date.now() + 7 * 86400000).toISOString().slice(0, 10);
+  const d2 = new Date(Date.now() + 11 * 86400000).toISOString().slice(0, 10);
+
   const create = await request("/bookings", {
     method: "POST",
-    body: `listingId=${listing._id}&checkIn=2026-09-10&checkOut=2026-09-14&guests=2&_csrf=${encodeURIComponent(tok)}`,
+    body: `listingId=${listing._id}&checkIn=${d1}&checkOut=${d2}&guests=2&_csrf=${encodeURIComponent(tok)}`,
   });
   assert.strictEqual(create.status, 302);
 

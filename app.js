@@ -53,11 +53,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.resolve(process.cwd(), "public")));
 const sessionSecret = (process.env.SESSION_SECRET && process.env.SESSION_SECRET.trim()) || "onairsupersecretkey2026";
-app.use(cookieParser(sessionSecret));
 app.use((req, res, next) => {
-  if (!req.secret) req.secret = sessionSecret;
+  req.secret = sessionSecret;
   next();
 });
+app.use(cookieParser(sessionSecret));
 
 // Session Middleware & Cookie Options Configuration
 const sessionOptions = {

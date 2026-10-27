@@ -33,5 +33,8 @@ module.exports = async (req, res) => {
   try {
     await ensureConnection();
   } catch {}
+  if (!req.secret) {
+    req.secret = (process.env.SESSION_SECRET && process.env.SESSION_SECRET.trim()) || "onairsupersecretkey2026";
+  }
   return (app.app || app)(req, res);
 };

@@ -85,11 +85,10 @@ function getSessionUserId(req) {
 
 // ---------- CSRF (double submit token pattern resilient to serverless cold-starts) ----------
 function attachCsrf(req, res, next) {
-  let token = (req.signedCookies && req.signedCookies[CSRF_COOKIE]) || (req.cookies && req.cookies[CSRF_COOKIE]);
+  let token = (req.cookies && req.cookies[CSRF_COOKIE]) || (req.signedCookies && req.signedCookies[CSRF_COOKIE]);
   if (!token || token === true || typeof token !== 'string') {
     token = crypto.randomBytes(18).toString('hex');
     res.cookie(CSRF_COOKIE, token, {
-      signed: true,
       httpOnly: false,
       sameSite: 'lax',
     });
