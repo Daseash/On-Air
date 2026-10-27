@@ -223,4 +223,7 @@ if (require.main === module) {
   start();
 }
 
-module.exports = { app, start };
+module.exports = app;
+module.exports.app = app;
+module.exports.start = start;
+
