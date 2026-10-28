@@ -1,0 +1,343 @@
+/* ==========================================================================
+   Skiper 58: Text Roll Navigation & Staggered Character Animation
+   Faithfully recreates Skiper UI skiper58 (skiper-ui.com/v1/skiper58)
+   ========================================================================== */
+
+/* ─── 1. Reusable Text Roll Component ─── */
+.skiper58-roll {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  line-height: 1.12;
+  vertical-align: middle;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.skiper58-roll .roll-track {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.skiper58-roll .roll-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.skiper58-roll .roll-letter {
+  display: inline-block;
+  will-change: transform;
+  transform: translateY(0%);
+  transition: transform 0.34s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.skiper58-roll .roll-back .roll-letter {
+  transform: translateY(100%);
+}
+
+.skiper58-roll .roll-letter.is-space {
+  display: inline-block;
+  width: 0.28em;
+}
+
+/* ─── Hover Animations (Both Individual Roll and Parent Link Hover) ─── */
+.skiper58-roll:hover .roll-front .roll-letter,
+a:hover .skiper58-roll .roll-front .roll-letter,
+button:hover .skiper58-roll .roll-front .roll-letter,
+li:hover .skiper58-roll .roll-front .roll-letter,
+.nav-center-link:hover .skiper58-roll .roll-front .roll-letter,
+.nav-host-link:hover .skiper58-roll .roll-front .roll-letter,
+.nav-user-menu a:hover .skiper58-roll .roll-front .roll-letter,
+.nav-mobile-menu a:hover .skiper58-roll .roll-front .roll-letter,
+.skiper58-link:hover .skiper58-roll .roll-front .roll-letter {
+  transform: translateY(-100%);
+}
+
+.skiper58-roll:hover .roll-back .roll-letter,
+a:hover .skiper58-roll .roll-back .roll-letter,
+button:hover .skiper58-roll .roll-back .roll-letter,
+li:hover .skiper58-roll .roll-back .roll-letter,
+.nav-center-link:hover .skiper58-roll .roll-back .roll-letter,
+.nav-host-link:hover .skiper58-roll .roll-back .roll-letter,
+.nav-user-menu a:hover .skiper58-roll .roll-back .roll-letter,
+.nav-mobile-menu a:hover .skiper58-roll .roll-back .roll-letter,
+.skiper58-link:hover .skiper58-roll .roll-back .roll-letter {
+  transform: translateY(0%);
+}
+
+
+/* ─── 2. Navbar Menu Trigger Button ─── */
+.nav-skiper58-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 42px;
+  padding: 0 1.05rem;
+  border-radius: 9999px;
+  background: #18181b;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.22s cubic-bezier(0.25, 1, 0.5, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  outline: none;
+}
+
+.nav-skiper58-trigger:hover {
+  background: #27272a;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+  color: #ffffff;
+}
+
+.nav-skiper58-trigger i {
+  font-size: 0.92rem;
+  color: #e4e4e7;
+  transition: transform 0.25s ease;
+}
+
+.nav-skiper58-trigger:hover i {
+  transform: rotate(180deg);
+}
+
+.nav-skiper58-trigger .skiper58-roll {
+  color: #ffffff;
+}
+
+
+/* ─── 3. Skiper 58 Fullscreen Navigation Overlay ─── */
+.skiper58-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 10, 14, 0.94);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.32s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.32s;
+  overflow-y: auto;
+  padding: 2rem 1.5rem;
+  box-sizing: border-box;
+}
+
+.skiper58-overlay.is-active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+body.skiper58-overlay-open {
+  overflow: hidden !important;
+}
+
+.skiper58-modal-panel {
+  position: relative;
+  width: 100%;
+  max-width: 860px;
+  min-height: 82vh;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2rem 1.5rem;
+  box-sizing: border-box;
+  animation: skiper58PanelIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes skiper58PanelIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.skiper58-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.skiper58-pill-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #a1a1aa;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 0.4rem 0.95rem;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.skiper58-pill-badge .pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #38bdf8;
+  display: inline-block;
+  box-shadow: 0 0 8px #38bdf8;
+}
+
+.skiper58-close-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+  font-size: 1.15rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+}
+
+.skiper58-close-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: rotate(90deg) scale(1.1);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.skiper58-nav-body {
+  width: 100%;
+  margin: auto 0;
+  padding: 1rem 0;
+}
+
+.skiper58-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.1rem;
+}
+
+.skiper58-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.skiper58-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: #f4f4f5;
+  padding: 0.25rem 2rem;
+  transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.skiper58-num {
+  font-family: monospace, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #71717a;
+  margin-right: 1.25rem;
+  opacity: 0.75;
+  transition: color 0.25s ease, transform 0.25s ease, opacity 0.25s ease;
+  user-select: none;
+}
+
+.skiper58-item:hover .skiper58-num {
+  color: #38bdf8;
+  opacity: 1;
+  transform: translateX(-4px);
+}
+
+/* Big bold uppercase typography matching Skiper 58 */
+.skiper58-text {
+  font-family: var(--font-display, "Montserrat", -apple-system, BlinkMacSystemFont, sans-serif);
+  font-size: 2.6rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: #ffffff;
+  line-height: 0.85;
+}
+
+@media (min-width: 640px) {
+  .skiper58-text {
+    font-size: 3.25rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .skiper58-text {
+    font-size: 4.25rem;
+  }
+}
+
+.skiper58-footer {
+  width: 100%;
+  margin-top: 2rem;
+}
+
+.skiper58-footer-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #71717a;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 1.5rem;
+}
+
+.skiper58-footer-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #a1a1aa;
+}
+
+@media (max-width: 640px) {
+  .skiper58-num {
+    font-size: 0.8rem;
+    margin-right: 0.6rem;
+  }
+  .skiper58-text {
+    font-size: 2.1rem;
+  }
+  .skiper58-list {
+    gap: 0.75rem;
+  }
+  .skiper58-footer-meta {
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+}
