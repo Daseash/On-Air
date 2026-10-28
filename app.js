@@ -19,9 +19,9 @@ const ExpressError = require("./utils/ExpressError.js");
 
 const cors = require("cors");
 
-// Optional non-blocking MongoDB connection
+// Optional non-blocking MongoDB connection for local server
 const dbConnStr = process.env.ATLASDB_URL || process.env.DB_URL || process.env.MONGODB_URI;
-if (dbConnStr && mongoose.connection.readyState === 0) {
+if (!process.env.VERCEL && dbConnStr && mongoose.connection.readyState === 0) {
   mongoose.connect(dbConnStr, { serverSelectionTimeoutMS: 3000 }).catch((err) => {
     console.warn("MongoDB not connected, operating in standalone in-memory mode:", err.message);
   });
@@ -51,7 +51,7 @@ app.set("views", path.resolve(process.cwd(), "views"));
 // Body Parser & Static Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static(path.resolve(process.cwd(), "public")));
+app.use(express.static(path.resolve(process.cwd(), "public"), { maxAge: "1d" }));
 const sessionSecret = (process.env.SESSION_SECRET && process.env.SESSION_SECRET.trim()) || "onairsupersecretkey2026";
 app.use((req, res, next) => {
   req.secret = sessionSecret;

@@ -36,14 +36,6 @@
     </div>
     
     <div class="d-flex align-items-center gap-2">
-      <div class="btn-group view-toggle-group" role="group" aria-label="View mode">
-        <button type="button" class="btn btn-sm btn-outline-dark active" id="view-toggle-grid" title="Standard Grid View">
-          <i class="fa-solid fa-table-cells-large me-1"></i> <span class="d-none d-sm-inline">Grid</span>
-        </button>
-        <button type="button" class="btn btn-sm btn-outline-dark" id="view-toggle-canvas" title="Skiper 73 Infinite Canvas">
-          <i class="fa-solid fa-compass text-danger me-1"></i> <span class="d-none d-sm-inline">Canvas</span>
-        </button>
-      </div>
 
       <button type="button" class="filter-trigger-btn" data-bs-toggle="modal" data-bs-target="#filterModal">
         <i class="fa-solid fa-sliders"></i>
@@ -149,10 +141,7 @@
     </a>
   </div>
   <% } else { %>
-  <!-- Infinite Canvas View (Skiper 73) -->
-  <div id="canvas-view-container" style="display: none; margin-bottom: 2.5rem;">
-    <%- include('../includes/infiniteCanvas', { allListings: allListings }) %>
-  </div>
+
 
   <!-- Standard Grid View -->
   <div id="grid-view-container">
