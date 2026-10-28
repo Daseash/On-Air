@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+app.set("trust proxy", 1);
 const mongoose = require("mongoose");
 // Buffer commands until connection is established
 const path = require("path");
@@ -49,6 +50,20 @@ app.engine("ejs", ejsMate);
 app.set("view engine", "ejs");
 app.set("views", path.resolve(process.cwd(), "views"));
 
+// Ensure Post-Redirect-Get (PRG) pattern uses 303 See Other on POST/PUT/DELETE
+// to prevent Vercel edge proxy / browser 307 infinite redirect loops
+app.use((req, res, next) => {
+  const origRedirect = res.redirect.bind(res);
+  res.redirect = function (statusOrUrl, maybeUrl) {
+    if (typeof statusOrUrl === "string") {
+      const status = req.method === "GET" || req.method === "HEAD" ? 302 : 303;
+      return origRedirect(status, statusOrUrl);
+    }
+    return origRedirect(statusOrUrl, maybeUrl);
+  };
+  next();
+});
+
 // Body Parser & Static Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -64,9 +79,8 @@ app.use(cookieParser(sessionSecret));
 const sessionOptions = {
   secret: sessionSecret,
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
   cookie: {
-    expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
     maxAge: 7 * 24 * 60 * 60 * 1000,
     httpOnly: true,
     sameSite: "lax",

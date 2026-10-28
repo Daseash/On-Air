@@ -17,11 +17,19 @@ router
   .get(userController.renderLoginForm)
   .post(
     saveRedirectUrl,
-    passport.authenticate("local", {
-      failureRedirect: "/login",
-      failureFlash: "Invalid username or password!",
-    }),
-    wrapAsync(userController.login)
+    (req, res, next) => {
+      passport.authenticate("local", (err, user, info) => {
+        if (err) return next(err);
+        if (!user) {
+          req.flash("error", (info && info.message) || "Invalid username or password!");
+          return res.redirect(303, "/login");
+        }
+        req.login(user, (loginErr) => {
+          if (loginErr) return next(loginErr);
+          return userController.login(req, res);
+        });
+      })(req, res, next);
+    }
   );
 
 // Change Password Route (Authenticated)

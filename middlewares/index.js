@@ -1,3 +1,11 @@
+const isAuthUrl = (url) =>
+  !url ||
+  url === "/" ||
+  url.startsWith("/login") ||
+  url.startsWith("/signup") ||
+  url.startsWith("/logout") ||
+  url.startsWith("/reset-password");
+
 const mongoose = require("mongoose");
 const ExpressError = require("../utils/ExpressError.js");
 const Listing = require("../models/listing.js");
@@ -27,9 +35,7 @@ module.exports.isLoggedIn = async (req, res, next) => {
     }
     return next();
   }
-  if (req.session) {
-    req.session.redirectUrl = req.originalUrl;
-  }
+  if (req.session && !isAuthUrl(req.originalUrl)) { req.session.redirectUrl = req.originalUrl; }
   req.flash("error", "You must be logged in to proceed!");
   return res.redirect("/login");
 };
@@ -39,8 +45,10 @@ module.exports.requireLogin = module.exports.isLoggedIn;
 
 // Middleware to save redirect URL to res.locals before Passport login clears session
 module.exports.saveRedirectUrl = (req, res, next) => {
-  if (req.session.redirectUrl) {
+  if (req.session && req.session.redirectUrl && !isAuthUrl(req.session.redirectUrl)) {
     res.locals.redirectUrl = req.session.redirectUrl;
+  } else {
+    res.locals.redirectUrl = "/listings";
   }
   next();
 };

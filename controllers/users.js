@@ -1,12 +1,26 @@
+const isAuthUrl = (url) =>
+  !url ||
+  url === "/" ||
+  url.startsWith("/login") ||
+  url.startsWith("/signup") ||
+  url.startsWith("/logout") ||
+  url.startsWith("/reset-password");
+
 const mongoose = require("mongoose");
 const User = require("../models/user.js");
-const { login, logout } = require("../utils/auth.js");
+const { login, logout, getSessionUser } = require("../utils/auth.js");
 
 // Render Signup Form
 module.exports.renderSignupForm = (req, res) => {
+  const sessionUser = getSessionUser(req);
+  if ((req.isAuthenticated && req.isAuthenticated()) || sessionUser || (req.session && req.session.userId)) {
+    return res.redirect(303, "/listings");
+  }
+  let nextUrl = req.query.next || "";
+  if (isAuthUrl(nextUrl)) nextUrl = "";
   res.render("users/signup.ejs", {
     pageTitle: "Sign Up — On Air",
-    next: req.query.next || "",
+    next: nextUrl,
   });
 };
 
@@ -56,12 +70,18 @@ module.exports.signup = async (req, res, next) => {
 
 // Render Login Form
 module.exports.renderLoginForm = (req, res) => {
-  if (req.query.next) {
+  const sessionUser = getSessionUser(req);
+  if ((req.isAuthenticated && req.isAuthenticated()) || sessionUser || (req.session && req.session.userId)) {
+    return res.redirect(303, "/listings");
+  }
+  if (req.query.next && !isAuthUrl(req.query.next)) {
     req.session.redirectUrl = req.query.next;
   }
+  let nextUrl = (req.session && req.session.redirectUrl) || req.query.next || "";
+  if (isAuthUrl(nextUrl)) nextUrl = "";
   res.render("users/login.ejs", {
     pageTitle: "Sign In — On Air",
-    next: (req.session && req.session.redirectUrl) || req.query.next || "",
+    next: nextUrl,
   });
 };
 
@@ -73,7 +93,10 @@ module.exports.login = async (req, res) => {
   req.flash("success", "Welcome back to On Air!");
   let redirectUrl = res.locals.redirectUrl || req.body.next || "/listings";
   if (req.session) delete req.session.redirectUrl;
-  res.redirect(redirectUrl);
+  if (!redirectUrl || isAuthUrl(redirectUrl)) {
+    redirectUrl = "/listings";
+  }
+  res.redirect(303, redirectUrl);
 };
 
 // Render Change Password Form

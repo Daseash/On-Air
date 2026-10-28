@@ -20,3 +20,5 @@ yarn-error.log*
 public/uploads/*
 !public/uploads/.gitkeep
 .vercel
+
+.playwright-mcp/
