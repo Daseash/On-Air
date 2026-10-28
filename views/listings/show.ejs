@@ -71,7 +71,7 @@
   </div>
 
   <div class="show-hero">
-    <img src="<%= Listing.image.url || Listing.image %>" alt="<%= Listing.title %>" />
+    <img src="<%= (typeof to4k !== "undefined" ? to4k(Listing.image) : (Listing.image.url || Listing.image)) %>" alt="<%= Listing.title %>" />
     <% if (typeof currentUser !== 'undefined' && currentUser && Listing.owner && (String(currentUser._id) === String(Listing.owner._id || Listing.owner))) { %>
     <a href="/listings/<%= Listing._id %>/edit" class="show-hero-glass-edit" title="Edit listing">
       <span class="material-symbols-outlined">edit</span>
@@ -354,7 +354,7 @@
           <a href="/listings/<%= item._id %>" class="card-link">
             <div class="card-media">
               <img
-                src="<%= item.image.url %>"
+                src="<%= typeof to4k !== "undefined" ? to4k(item.image) : item.image.url %>"
                 alt="<%= item.title %>"
                 loading="lazy"
               />

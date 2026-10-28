@@ -14,11 +14,29 @@ const listingSchema = new schema({
     url: {
       type: String,
       default:
-        "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-      set: (v) =>
-        v === ""
-          ? "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
-          : v,
+        "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=3840&q=90",
+      set: (v) => {
+        if (!v || v === "") {
+          return "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=3840&q=90";
+        }
+        if (typeof v === "string" && (v.includes("images.unsplash.com") || v.includes("plus.unsplash.com"))) {
+          return v.replace(/w=\d+/g, "w=3840").replace(/q=\d+/g, "q=90");
+        }
+        return v;
+      },
+      get: (v) => {
+        if (!v) {
+          return "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=3840&q=90";
+        }
+        if (typeof v === "string" && (v.includes("images.unsplash.com") || v.includes("plus.unsplash.com"))) {
+          let u = v.replace(/w=\d+/g, "w=3840").replace(/q=\d+/g, "q=90");
+          if (!u.includes("w=3840")) {
+            u += (u.includes("?") ? "&" : "?") + "auto=format&fit=crop&w=3840&q=90";
+          }
+          return u;
+        }
+        return v;
+      },
     },
     filename: {
       type: String,
@@ -71,6 +89,9 @@ listingSchema.post("findOneAndDelete", async (listing) => {
     await Review.deleteMany({ _id: { $in: listing.reviews } });
   }
 });
+
+listingSchema.set("toObject", { getters: true });
+listingSchema.set("toJSON", { getters: true });
 
 const listing = mongoose.model("listing", listingSchema);
 module.exports = listing;

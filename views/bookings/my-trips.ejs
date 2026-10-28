@@ -35,7 +35,7 @@
     <% upcoming.forEach((trip) => { %>
     <div class="trip-card">
       <a href="/listings/<%= trip.listing._id %>" class="trip-media">
-        <img src="<%= ((trip.listing.image && trip.listing.image.url) || 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=60') %>" alt="<%= trip.listing.title %>" loading="lazy" />
+        <img src="<%= ((trip.listing.image && trip.listing.image.url) || 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=3840&q=90') %>" alt="<%= trip.listing.title %>" loading="lazy" />
       </a>
       <div class="trip-body">
         <span class="trip-status trip-status--confirmed">Confirmed</span>
@@ -66,7 +66,7 @@
     <% past.forEach((trip) => { %>
     <div class="trip-card <%= trip.status === 'cancelled' ? 'trip-card--cancelled' : '' %>">
       <a href="/listings/<%= trip.listing._id %>" class="trip-media">
-        <img src="<%= ((trip.listing.image && trip.listing.image.url) || 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=60') %>" alt="<%= trip.listing.title %>" loading="lazy" />
+        <img src="<%= ((trip.listing.image && trip.listing.image.url) || 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=3840&q=90') %>" alt="<%= trip.listing.title %>" loading="lazy" />
       </a>
       <div class="trip-body">
         <span class="trip-status trip-status--<%= trip.status %>"><%= trip.status %></span>

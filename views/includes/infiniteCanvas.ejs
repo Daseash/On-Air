@@ -23,7 +23,7 @@
         data-price="<%= listing.price ? listing.price.toLocaleString('en-IN') : '0' %>"
         data-rating="<%= listing._avgRating || '' %>"
         data-category="<%= listing.category || '' %>"
-        data-image="<%= listing.image && listing.image.url ? listing.image.url : (typeof listing.image === 'string' && listing.image ? listing.image : 'https://images.unsplash.com/photo-1552733407-5d5c46c3bb3b?auto=format&fit=crop&w=800&q=60') %>">
+        data-image="<%= listing.image && listing.image.url ? listing.image.url : (typeof listing.image === 'string' && listing.image ? listing.image : 'https://images.unsplash.com/photo-1552733407-5d5c46c3bb3b?auto=format&fit=crop&w=3840&q=90') %>">
       </div>
     <% }); %>
   </div>

@@ -102,10 +102,30 @@ passport.deserializeUser(User.deserializeUser());
 app.use(attachCsrf);
 app.use(csrfProtect);
 
+// 4K Ultra-High Definition Image Resolution Optimizer Helper
+const to4k = (img) => {
+  let url = typeof img === "string" ? img : (img && img.url ? img.url : "");
+  if (!url) return "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=3840&q=90";
+  if (url.includes("images.unsplash.com") || url.includes("plus.unsplash.com")) {
+    let upgraded = url.replace(/w=\d+/g, "w=3840").replace(/q=\d+/g, "q=90");
+    if (!upgraded.includes("w=3840")) {
+      upgraded += (upgraded.includes("?") ? "&" : "?") + "auto=format&fit=crop&w=3840&q=90";
+    }
+    return upgraded;
+  }
+  if (url.includes("res.cloudinary.com") && url.includes("/upload/")) {
+    if (!url.includes("/w_") && !url.includes("/q_")) {
+      return url.replace("/upload/", "/upload/w_3840,c_limit,q_auto:best,f_auto/");
+    }
+  }
+  return url;
+};
+
 // Store Session & Flash Info in res.locals Middleware
 app.use(async (req, res, next) => {
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
+  res.locals.to4k = to4k;
 
   if (req.user) {
     res.locals.currentUser = req.user;
