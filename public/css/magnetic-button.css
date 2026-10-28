@@ -1,0 +1,12 @@
+/* ==========================================================================
+   Unlumen UI: Magnetic Button Physics Styling
+   ========================================================================== */
+
+[data-magnetic],
+.btn-magnetic,
+.hs-submit,
+.filter-trigger-btn,
+.nav-skiper58-trigger {
+  will-change: transform;
+  transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+}

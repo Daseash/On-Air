@@ -1,0 +1,161 @@
+/* ==========================================================================
+   Skiper 47: 3D Perspective Coverflow Carousel (Swiper.js)
+   Exact match for skiper-ui.com/v1/skiper47 Carousel_001
+   ========================================================================== */
+
+.skiper47-container {
+  position: relative;
+  width: 100%;
+  max-width: 840px; /* Centered w-3xl perspective width from skiper-ui.com */
+  margin: 1rem auto 2.5rem;
+}
+
+.skiper47-swiper {
+  position: relative;
+  width: 100%;
+  perspective: 1200px;
+  -webkit-perspective: 1200px;
+  padding-top: 1.25rem !important;
+  padding-bottom: 54px !important; /* Space for pagination bullets */
+  overflow: hidden !important;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.skiper47-slide {
+  height: auto !important;
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+/* Card inside 3D Coverflow slide */
+.skiper47-card {
+  width: 100% !important;
+  max-width: 440px !important;
+  margin: 0 auto;
+  border-radius: 16px !important;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid var(--border-soft, #e2e8f0);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.skiper47-card .card-media {
+  position: relative;
+  width: 100%;
+  height: 250px !important;
+  overflow: hidden;
+  background: #f1f5f9;
+}
+
+.skiper47-card .card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  display: block;
+}
+
+.skiper47-card:hover .card-media img {
+  transform: scale(1.05);
+}
+
+/* Active center card vs Inactive side cards */
+.swiper-slide-active .skiper47-card {
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.14) !important;
+  border-color: rgba(0, 0, 0, 0.12);
+  opacity: 1;
+}
+
+.swiper-slide:not(.swiper-slide-active) {
+  opacity: 0.65;
+  transition: opacity 0.3s ease;
+}
+
+.swiper-slide:not(.swiper-slide-active):hover {
+  opacity: 0.9;
+}
+
+/* Floating Navigation Chevrons */
+.skiper47-btn {
+  width: 42px !important;
+  height: 42px !important;
+  border-radius: 50% !important;
+  background: #ffffff !important;
+  color: #18181b !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  z-index: 25 !important;
+  top: 42% !important;
+  transform: translateY(-50%) !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.skiper47-btn::after {
+  display: none !important;
+}
+
+.skiper47-btn i {
+  font-size: 0.95rem;
+  color: #18181b;
+}
+
+.skiper47-btn:hover {
+  transform: translateY(-50%) scale(1.1) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18) !important;
+}
+
+.skiper47-btn:active {
+  transform: translateY(-50%) scale(0.95) !important;
+}
+
+.skiper47-btn-prev {
+  left: 10px !important;
+}
+
+.skiper47-btn-next {
+  right: 10px !important;
+}
+
+/* Bullet Pagination matching Skiper 47 */
+.skiper47-pagination {
+  bottom: 12px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  z-index: 20 !important;
+}
+
+.skiper47-pagination .swiper-pagination-bullet {
+  width: 8px !important;
+  height: 8px !important;
+  border-radius: 50% !important;
+  background: #cbd5e1 !important;
+  opacity: 1 !important;
+  margin: 0 !important;
+  transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1) !important;
+  cursor: pointer !important;
+}
+
+.skiper47-pagination .swiper-pagination-bullet-active {
+  background: #2563eb !important; /* Vibrant Skiper blue active bullet */
+  width: 24px !important;
+  border-radius: 9999px !important;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4) !important;
+}
+
+@media (max-width: 640px) {
+  .skiper47-btn {
+    display: none !important;
+  }
+}

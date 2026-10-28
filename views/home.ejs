@@ -1,6 +1,6 @@
 <% layout('layouts/boilerplate') -%>
 
-  <% var pageClass='page-main--home' ; %>
+<% var pageClass='page-main--home'; %>
 
 <section class="hero hero--clean" style="background: #ffffff; padding: 2.25rem 1rem 2rem; text-align: center; border-bottom: 1px solid #ebebeb;">
   <div class="container-xl" style="max-width: 950px; margin: 0 auto;">
@@ -33,7 +33,7 @@
           <label for="hero-guests" style="display: block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted, #717171);">Guests</label>
           <input id="hero-guests" type="number" name="guests" min="1" max="16" value="2" style="border: none; outline: none; background: transparent; font-weight: 600; font-size: 0.9rem; color: var(--text, #222); width: 60px;" />
         </div>
-        <button class="hs-submit" type="submit" aria-label="Search" style="width: 44px; height: 44px; border-radius: 50%; background: #18181b; color: white; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.15s ease, background 0.15s ease;">
+        <button class="hs-submit btn-magnetic" type="submit" aria-label="Search" data-magnetic style="width: 44px; height: 44px; border-radius: 50%; background: #18181b; color: white; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.15s ease, background 0.15s ease;">
           <i class="fa-solid fa-magnifying-glass"></i>
         </button>
       </form>
@@ -41,327 +41,435 @@
   </div>
 </section>
 
-      <section class="container-xl pt-4">
-        <%- include('includes/categories') %>
-      </section>
+<!-- Category Navigation Bar with Unlumen Spring Highlight -->
+<section class="container-xl pt-4">
+  <%- include('includes/categories') %>
+</section>
 
-      <% if (typeof beachListings !=='undefined' && beachListings && beachListings.length> 0) { %>
-        <section class="container-xl pt-4">
-          <div class="section-row">
-            <div>
-              <h2 class="section-title"><span class="me-2">🏖️</span>Beachfront Escapes</h2>
-              <p>Sunny coastal cottages, ocean villas, and tropical paradises.</p>
-            </div>
-            <a class="link-arrow" href="/listings?category=beach">Explore beachfront <i class="fa-solid fa-arrow-right"></i></a>
-          </div>
+<!-- 🏖️ Beachfront Escapes (Skiper 47 3D Perspective Coverflow) -->
+<% if (typeof beachListings !== 'undefined' && beachListings && beachListings.length > 0) { %>
+  <section class="container-xl pt-4" id="section-beach">
+    <div class="section-row">
+      <div>
+        <h2 class="section-title"><span class="me-2">🏖️</span>Beachfront Escapes</h2>
+        <p>Sunny coastal cottages, ocean villas, and tropical paradises in Ultra-HD 4K.</p>
+      </div>
+      <a class="link-arrow" href="/listings?category=beach">Explore beachfront <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
 
-          <div class="skiper-scroll-wrapper">
-            <button class="skiper-arrow skiper-prev is-hidden" type="button" aria-label="Previous beachfront stays">
-              <i class="fa-solid fa-chevron-left"></i>
-            </button>
-            <div class="skiper-scroll" data-skiper-scroll>
-              <% beachListings.forEach((listing)=> { %>
-                <div class="listing-card">
-                  <a href="/listings/<%= listing._id %>" class="card-link">
-                    <div class="card-media">
-                      <img
-                        src="<%= listing.image && listing.image.url ? listing.image.url : (typeof listing.image === 'string' && listing.image ? listing.image : 'https://images.unsplash.com/photo-1552733407-5d5c46c3bb3b?auto=format&fit=crop&w=3840&q=90') %>"
-                        alt="<%= listing.title %>" loading="lazy" />
-                      <span class="card-badge">🏖️ Beachfront</span>
-                    </div>
-                    <div class="card-body">
-                      <div class="card-row">
-                        <h3 class="card-title">
-                          <%= listing.location %>, <%= listing.country %>
-                        </h3>
-                        <% if (listing._avgRating) { %>
-                          <span class="card-rating"><i class="fa-solid fa-star"></i>
-                            <%= listing._avgRating.toFixed(1) %>
-                          </span>
-                          <% } else { %>
-                            <span class="card-rating card-rating--new">New</span>
-                            <% } %>
-                      </div>
-                      <p class="card-subtitle">
-                        <%= listing.title %>
-                      </p>
-                      <p class="card-price">
-                        &#8377;<%= listing.price ? listing.price.toLocaleString("en-IN") : '0' %> <span>/ night</span>
-                      </p>
-                    </div>
-                  </a>
-                  <% if (typeof currentUser !=='undefined' && currentUser) { %>
-                    <form method="post" action="/wishlist/<%= listing._id %>/toggle" class="wishlist-form">
-                      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
-                      <button type="submit" class="wishlist-btn" aria-label="Save to wishlist">
-                        <i class="fa-regular fa-heart"></i>
-                      </button>
-                    </form>
-                    <% } %>
-                </div>
-                <% }); %>
-            </div>
-            <button class="skiper-arrow skiper-next" type="button" aria-label="Next beachfront stays">
-              <i class="fa-solid fa-chevron-right"></i>
-            </button>
-          </div>
-        </section>
-        <% } %>
-
-          <% if (typeof viewListings !=='undefined' && viewListings && viewListings.length> 0) { %>
-            <section class="container-xl pt-5">
-              <div class="section-row">
-                <div>
-                  <h2 class="section-title"><span class="me-2">🌄</span>Amazing Views &amp; Mountain Retreats</h2>
-                  <p>Alpine chalets, secluded treehouses, and mountain lodges with panoramic views.</p>
-                </div>
-                <a class="link-arrow" href="/listings?category=amazing-views">Explore mountain stays <i class="fa-solid fa-arrow-right"></i></a>
-              </div>
-
-              <div class="skiper-scroll-wrapper">
-                <button class="skiper-arrow skiper-prev is-hidden" type="button" aria-label="Previous mountain stays">
-                  <i class="fa-solid fa-chevron-left"></i>
-                </button>
-                <div class="skiper-scroll" data-skiper-scroll>
-                  <% viewListings.forEach((listing)=> { %>
-                    <div class="listing-card">
-                      <a href="/listings/<%= listing._id %>" class="card-link">
-                        <div class="card-media">
-                          <img
-                            src="<%= listing.image && listing.image.url ? listing.image.url : (typeof listing.image === 'string' && listing.image ? listing.image : 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=3840&q=90') %>"
-                            alt="<%= listing.title %>" loading="lazy" />
-                          <span class="card-badge">🌄 Amazing View</span>
-                        </div>
-                        <div class="card-body">
-                          <div class="card-row">
-                            <h3 class="card-title">
-                              <%= listing.location %>, <%= listing.country %>
-                            </h3>
-                            <% if (listing._avgRating) { %>
-                              <span class="card-rating"><i class="fa-solid fa-star"></i>
-                                <%= listing._avgRating.toFixed(1) %>
-                              </span>
-                              <% } else { %>
-                                <span class="card-rating card-rating--new">New</span>
-                                <% } %>
-                          </div>
-                          <p class="card-subtitle">
-                            <%= listing.title %>
-                          </p>
-                          <p class="card-price">
-                            &#8377;<%= listing.price ? listing.price.toLocaleString("en-IN") : '0' %> <span>/ night</span>
-                          </p>
-                        </div>
-                      </a>
-                      <% if (typeof currentUser !=='undefined' && currentUser) { %>
-                        <form method="post" action="/wishlist/<%= listing._id %>/toggle" class="wishlist-form">
-                          <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
-                          <button type="submit" class="wishlist-btn" aria-label="Save to wishlist">
-                            <i class="fa-regular fa-heart"></i>
-                          </button>
-                        </form>
-                        <% } %>
-                    </div>
-                    <% }); %>
-                </div>
-                <button class="skiper-arrow skiper-next" type="button" aria-label="Next mountain stays">
-                  <i class="fa-solid fa-chevron-right"></i>
-                </button>
-              </div>
-            </section>
-            <% } %>
-
-              <% if (typeof trendingListings !=='undefined' && trendingListings && trendingListings.length> 0) { %>
-                <section class="container-xl pt-5">
-                  <div class="section-row">
-                    <div>
-                      <h2 class="section-title"><span class="me-2">🔥</span>Trending Destinations</h2>
-                      <p>Top-rated villas, city lofts, and historic homes booked most this season.</p>
-                    </div>
-                    <a class="link-arrow" href="/listings?category=trending">Explore trending <i class="fa-solid fa-arrow-right"></i></a>
+    <div class="skiper47-container">
+      <div class="swiper skiper47-swiper">
+        <div class="swiper-wrapper">
+          <% beachListings.forEach((listing) => { %>
+            <div class="swiper-slide skiper47-slide">
+              <div class="listing-card skiper47-card">
+                <a href="/listings/<%= listing._id %>" class="card-link">
+                  <div class="card-media">
+                    <img
+                      src="<%= listing.image && listing.image.url ? listing.image.url : (typeof listing.image === 'string' && listing.image ? listing.image : 'https://images.unsplash.com/photo-1552733407-5d5c46c3bb3b?auto=format&fit=crop&w=3840&q=90') %>"
+                      alt="<%= listing.title %>" loading="lazy" />
+                    <span class="card-badge">🏖️ Beachfront</span>
                   </div>
-
-                  <div class="skiper-scroll-wrapper">
-                    <button class="skiper-arrow skiper-prev is-hidden" type="button" aria-label="Previous trending stays">
-                      <i class="fa-solid fa-chevron-left"></i>
-                    </button>
-                    <div class="skiper-scroll" data-skiper-scroll>
-                      <% trendingListings.forEach((listing)=> { %>
-                        <div class="listing-card">
-                          <a href="/listings/<%= listing._id %>" class="card-link">
-                            <div class="card-media">
-                              <img
-                                src="<%= listing.image && listing.image.url ? listing.image.url : (typeof listing.image === 'string' && listing.image ? listing.image : 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=3840&q=90') %>"
-                                alt="<%= listing.title %>" loading="lazy" />
-                              <span class="card-badge">🔥 Trending</span>
-                            </div>
-                            <div class="card-body">
-                              <div class="card-row">
-                                <h3 class="card-title">
-                                  <%= listing.location %>, <%= listing.country %>
-                                </h3>
-                                <% if (listing._avgRating) { %>
-                                  <span class="card-rating"><i class="fa-solid fa-star"></i>
-                                    <%= listing._avgRating.toFixed(1) %>
-                                  </span>
-                                  <% } else { %>
-                                    <span class="card-rating card-rating--new">New</span>
-                                    <% } %>
-                              </div>
-                              <p class="card-subtitle">
-                                <%= listing.title %>
-                              </p>
-                              <p class="card-price">
-                                &#8377;<%= listing.price ? listing.price.toLocaleString("en-IN") : '0' %> <span>/ night</span>
-                              </p>
-                            </div>
-                          </a>
-                          <% if (typeof currentUser !=='undefined' && currentUser) { %>
-                            <form method="post" action="/wishlist/<%= listing._id %>/toggle" class="wishlist-form">
-                              <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
-                              <button type="submit" class="wishlist-btn" aria-label="Save to wishlist">
-                                <i class="fa-regular fa-heart"></i>
-                              </button>
-                            </form>
-                            <% } %>
-                        </div>
-                        <% }); %>
+                  <div class="card-body">
+                    <div class="card-row">
+                      <h3 class="card-title"><%= listing.location %>, <%= listing.country %></h3>
+                      <% if (listing._avgRating) { %>
+                        <span class="card-rating"><i class="fa-solid fa-star"></i> <%= listing._avgRating.toFixed(1) %></span>
+                      <% } else { %>
+                        <span class="card-rating card-rating--new">New</span>
+                      <% } %>
                     </div>
-                    <button class="skiper-arrow skiper-next" type="button" aria-label="Next trending stays">
-                      <i class="fa-solid fa-chevron-right"></i>
-                    </button>
+                    <p class="card-subtitle"><%= listing.title %></p>
+                    <p class="card-price">
+                      &#8377;<%= listing.price ? listing.price.toLocaleString("en-IN") : '0' %> <span>/ night</span>
+                    </p>
                   </div>
-                </section>
+                </a>
+                <% if (typeof currentUser !== 'undefined' && currentUser) { %>
+                  <form method="post" action="/wishlist/<%= listing._id %>/toggle" class="wishlist-form">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+                    <button type="submit" class="wishlist-btn" aria-label="Save to wishlist">
+                      <i class="fa-regular fa-heart"></i>
+                    </button>
+                  </form>
                 <% } %>
+              </div>
+            </div>
+          <% }); %>
+        </div>
+        <div class="swiper-button-prev skiper47-btn skiper47-btn-prev" aria-label="Previous">
+          <i class="fa-solid fa-chevron-left"></i>
+        </div>
+        <div class="swiper-button-next skiper47-btn skiper47-btn-next" aria-label="Next">
+          <i class="fa-solid fa-chevron-right"></i>
+        </div>
+        <div class="swiper-pagination skiper47-pagination"></div>
+      </div>
+    </div>
+  </section>
+<% } %>
 
-                <% if (typeof featuredListings !=='undefined' && featuredListings &&
-                  featuredListings.length> 0) { %>
-                                        <section class="container-xl pt-5">
-                                          <div class="section-row">
-                                            <div>
-                                              <h2 class="section-title"><span class="me-2">⭐</span>All Stays on ON AIR</h2>
-                                              <p>Handpicked stays loved by guests worldwide.</p>
-                                            </div>
-                                            <a class="link-arrow" href="/listings">Show all stays <i
-                                                class="fa-solid fa-arrow-right"></i></a>
-                                          </div>
+<!-- 🌄 Amazing Views & Mountain Retreats (Skiper 47 3D Perspective Coverflow) -->
+<% if (typeof viewListings !== 'undefined' && viewListings && viewListings.length > 0) { %>
+  <section class="container-xl pt-5" id="section-views">
+    <div class="section-row">
+      <div>
+        <h2 class="section-title"><span class="me-2">🌄</span>Amazing Views &amp; Mountain Retreats</h2>
+        <p>Alpine chalets, secluded treehouses, and mountain lodges with panoramic views.</p>
+      </div>
+      <a class="link-arrow" href="/listings?category=amazing-views">Explore mountain stays <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
 
-                                          <div class="listing-grid">
-                                            <% featuredListings.forEach((listing)=> { %>
-                                              <div class="listing-card">
-                                                <a href="/listings/<%= listing._id %>" class="card-link">
-                                                  <div class="card-media">
-                                                    <img
-                                                      src="<%= listing.image && listing.image.url ? listing.image.url : (typeof listing.image === 'string' && listing.image ? listing.image : 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=3840&q=90') %>"
-                                                      alt="<%= listing.title %>" loading="lazy" />
-                                                    <span class="card-badge">⭐ Featured</span>
-                                                  </div>
-                                                  <div class="card-body">
-                                                    <div class="card-row">
-                                                      <h3 class="card-title">
-                                                        <%= listing.location %>, <%= listing.country %>
-                                                      </h3>
-                                                      <% if (listing._avgRating) { %>
-                                                        <span class="card-rating"><i class="fa-solid fa-star"></i>
-                                                          <%= listing._avgRating.toFixed(1) %>
-                                                        </span>
-                                                        <% } %>
-                                                    </div>
-                                                    <p class="card-subtitle">
-                                                      <%= listing.title %>
-                                                    </p>
-                                                    <p class="card-price">
-                                                      &#8377;<%= listing.price ? listing.price.toLocaleString("en-IN")
-                                                        : '0' %> <span>/ night</span>
-                                                    </p>
-                                                  </div>
-                                                </a>
-                                                <% if (typeof currentUser !=='undefined' && currentUser) { %>
-                                                  <form method="post" action="/wishlist/<%= listing._id %>/toggle"
-                                                    class="wishlist-form">
-                                                    <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
-                                                    <button type="submit" class="wishlist-btn"
-                                                      aria-label="Save to wishlist">
-                                                      <i class="fa-regular fa-heart"></i>
-                                                    </button>
-                                                  </form>
-                                                  <% } %>
-                                              </div>
-                                              <% }); %>
-                                          </div>
-                                        </section>
-                                        <% } %>
+    <div class="skiper47-container">
+      <div class="swiper skiper47-swiper">
+        <div class="swiper-wrapper">
+          <% viewListings.forEach((listing) => { %>
+            <div class="swiper-slide skiper47-slide">
+              <div class="listing-card skiper47-card">
+                <a href="/listings/<%= listing._id %>" class="card-link">
+                  <div class="card-media">
+                    <img
+                      src="<%= listing.image && listing.image.url ? listing.image.url : (typeof listing.image === 'string' && listing.image ? listing.image : 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=3840&q=90') %>"
+                      alt="<%= listing.title %>" loading="lazy" />
+                    <span class="card-badge">🌄 Amazing View</span>
+                  </div>
+                  <div class="card-body">
+                    <div class="card-row">
+                      <h3 class="card-title"><%= listing.location %>, <%= listing.country %></h3>
+                      <% if (listing._avgRating) { %>
+                        <span class="card-rating"><i class="fa-solid fa-star"></i> <%= listing._avgRating.toFixed(1) %></span>
+                      <% } else { %>
+                        <span class="card-rating card-rating--new">New</span>
+                      <% } %>
+                    </div>
+                    <p class="card-subtitle"><%= listing.title %></p>
+                    <p class="card-price">
+                      &#8377;<%= listing.price ? listing.price.toLocaleString("en-IN") : '0' %> <span>/ night</span>
+                    </p>
+                  </div>
+                </a>
+                <% if (typeof currentUser !== 'undefined' && currentUser) { %>
+                  <form method="post" action="/wishlist/<%= listing._id %>/toggle" class="wishlist-form">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+                    <button type="submit" class="wishlist-btn" aria-label="Save to wishlist">
+                      <i class="fa-regular fa-heart"></i>
+                    </button>
+                  </form>
+                <% } %>
+              </div>
+            </div>
+          <% }); %>
+        </div>
+        <div class="swiper-button-prev skiper47-btn skiper47-btn-prev" aria-label="Previous">
+          <i class="fa-solid fa-chevron-left"></i>
+        </div>
+        <div class="swiper-button-next skiper47-btn skiper47-btn-next" aria-label="Next">
+          <i class="fa-solid fa-chevron-right"></i>
+        </div>
+        <div class="swiper-pagination skiper47-pagination"></div>
+      </div>
+    </div>
+  </section>
+<% } %>
 
-                                          <% if (!featuredListings || featuredListings.length===0) { %>
-                                            <section class="container-xl py-5">
-                                              <div class="empty-state">
-                                                <i class="fa-solid fa-compass"></i>
-                                                <h3>The adventure starts here</h3>
-                                                <p>Be the first to publish a new stay on ON AIR.</p>
-                                                <a href="/listings/new" class="btn btn-accent btn-lg">
-                                                  <i class="fa-solid fa-plus me-1"></i> Add New Stay
-                                                </a>
-                                              </div>
-                                            </section>
-                                            <% } %>
+<!-- 🔥 Trending Stays (Skiper 47 3D Perspective Coverflow) -->
+<% if (typeof trendingListings !== 'undefined' && trendingListings && trendingListings.length > 0) { %>
+  <section class="container-xl pt-5" id="section-trending">
+    <div class="section-row">
+      <div>
+        <h2 class="section-title"><span class="me-2">🔥</span>Trending Destinations</h2>
+        <p>Most-saved properties and trending escapes booked this week.</p>
+      </div>
+      <a class="link-arrow" href="/listings?category=trending">Explore trending <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
 
-                                              <section class="promo-band">
-                                                <div class="container-xl promo-band-inner">
-                                                  <div class="promo-copy">
-                                                    <span class="promo-eyebrow">Become a host</span>
-                                                    <h2 class="promo-title">It&rsquo;s easy to start hosting and earn
-                                                      extra income</h2>
-                                                    <p class="promo-text">
-                                                      List your place on ON AIR — set your own price, share your
-                                                      space, and welcome
-                                                      guests from around the world.
-                                                    </p>
-                                                    <a href="/listings/new" class="btn btn-accent btn-lg">
-                                                      <i class="fa-solid fa-house-circle-check me-1"></i> Start hosting
-                                                    </a>
-                                                  </div>
-                                                  <div class="promo-art" aria-hidden="true">
-                                                    <div class="promo-art-card promo-art-card--1"><i
-                                                        class="fa-solid fa-key"></i></div>
-                                                    <div class="promo-art-card promo-art-card--2"><i
-                                                        class="fa-solid fa-hand-holding-dollar"></i></div>
-                                                    <div class="promo-art-card promo-art-card--3"><i
-                                                        class="fa-solid fa-map-location-dot"></i></div>
-                                                  </div>
-                                                </div>
-                                              </section>
+    <div class="skiper47-container">
+      <div class="swiper skiper47-swiper">
+        <div class="swiper-wrapper">
+          <% trendingListings.forEach((listing) => { %>
+            <div class="swiper-slide skiper47-slide">
+              <div class="listing-card skiper47-card">
+                <a href="/listings/<%= listing._id %>" class="card-link">
+                  <div class="card-media">
+                    <img
+                      src="<%= listing.image && listing.image.url ? listing.image.url : (typeof listing.image === 'string' && listing.image ? listing.image : 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=3840&q=90') %>"
+                      alt="<%= listing.title %>" loading="lazy" />
+                    <span class="card-badge">🔥 Trending</span>
+                  </div>
+                  <div class="card-body">
+                    <div class="card-row">
+                      <h3 class="card-title"><%= listing.location %>, <%= listing.country %></h3>
+                      <% if (listing._avgRating) { %>
+                        <span class="card-rating"><i class="fa-solid fa-star"></i> <%= listing._avgRating.toFixed(1) %></span>
+                      <% } else { %>
+                        <span class="card-rating card-rating--new">New</span>
+                      <% } %>
+                    </div>
+                    <p class="card-subtitle"><%= listing.title %></p>
+                    <p class="card-price">
+                      &#8377;<%= listing.price ? listing.price.toLocaleString("en-IN") : '0' %> <span>/ night</span>
+                    </p>
+                  </div>
+                </a>
+                <% if (typeof currentUser !== 'undefined' && currentUser) { %>
+                  <form method="post" action="/wishlist/<%= listing._id %>/toggle" class="wishlist-form">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+                    <button type="submit" class="wishlist-btn" aria-label="Save to wishlist">
+                      <i class="fa-regular fa-heart"></i>
+                    </button>
+                  </form>
+                <% } %>
+              </div>
+            </div>
+          <% }); %>
+        </div>
+        <div class="swiper-button-prev skiper47-btn skiper47-btn-prev" aria-label="Previous">
+          <i class="fa-solid fa-chevron-left"></i>
+        </div>
+        <div class="swiper-button-next skiper47-btn skiper47-btn-next" aria-label="Next">
+          <i class="fa-solid fa-chevron-right"></i>
+        </div>
+        <div class="swiper-pagination skiper47-pagination"></div>
+      </div>
+    </div>
+  </section>
+<% } %>
 
-                                              <section class="container-xl trust-band">
-                                                <div class="trust-header">
-                                                  <span class="promo-eyebrow">ON AIR Cover</span>
-                                                  <h2 class="section-title">Every booking includes free protection</h2>
-                                                  <p>Your trip is protected from Host cancellations, listing
-                                                    inaccuracies, and more.</p>
-                                                </div>
-                                                <div class="trust-grid">
-                                                  <div class="trust-item">
-                                                    <i class="fa-solid fa-shield-halved"></i>
-                                                    <h4>Booking Protection Guarantee</h4>
-                                                    <p>If a Host cancels on you, find a similar or better home, or
-                                                      we&rsquo;ll refund you.</p>
-                                                  </div>
-                                                  <div class="trust-item">
-                                                    <i class="fa-solid fa-check-double"></i>
-                                                    <h4>Get-What-You-Booked Guarantee</h4>
-                                                    <p>If your stay isn&rsquo;t what you booked, we&rsquo;ll find a
-                                                      similar home or refund you.</p>
-                                                  </div>
-                                                  <div class="trust-item">
-                                                    <i class="fa-solid fa-headset"></i>
-                                                    <h4>24-hour Safety Line</h4>
-                                                    <p>Priority access to specially-trained safety agents, any time, day
-                                                      or night.</p>
-                                                  </div>
-                                                  <div class="trust-item">
-                                                    <i class="fa-solid fa-circle-exclamation"></i>
-                                                    <h4>Guest Support</h4>
-                                                    <p>Fast, friendly, round-the-clock help whenever you need it —
-                                                      before and during your trip.</p>
-                                                  </div>
-                                                </div>
-                                              </section>
+<!-- 🪵 Cozy Cabins (Skiper 47 3D Perspective Coverflow) -->
+<% if (typeof cabinListings !== 'undefined' && cabinListings && cabinListings.length > 0) { %>
+  <section class="container-xl pt-5" id="section-cabins">
+    <div class="section-row">
+      <div>
+        <h2 class="section-title"><span class="me-2">🪵</span>Secluded Cabins &amp; Lodges</h2>
+        <p>Rustic hideaways, timber frame chalets, and forest sanctuaries.</p>
+      </div>
+      <a class="link-arrow" href="/listings?category=cabin">Explore cabins <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+
+    <div class="skiper47-container">
+      <div class="swiper skiper47-swiper">
+        <div class="swiper-wrapper">
+          <% cabinListings.forEach((listing) => { %>
+            <div class="swiper-slide skiper47-slide">
+              <div class="listing-card skiper47-card">
+                <a href="/listings/<%= listing._id %>" class="card-link">
+                  <div class="card-media">
+                    <img
+                      src="<%= listing.image && listing.image.url ? listing.image.url : (typeof listing.image === 'string' && listing.image ? listing.image : 'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=3840&q=90') %>"
+                      alt="<%= listing.title %>" loading="lazy" />
+                    <span class="card-badge">🪵 Cabin</span>
+                  </div>
+                  <div class="card-body">
+                    <div class="card-row">
+                      <h3 class="card-title"><%= listing.location %>, <%= listing.country %></h3>
+                      <% if (listing._avgRating) { %>
+                        <span class="card-rating"><i class="fa-solid fa-star"></i> <%= listing._avgRating.toFixed(1) %></span>
+                      <% } else { %>
+                        <span class="card-rating card-rating--new">New</span>
+                      <% } %>
+                    </div>
+                    <p class="card-subtitle"><%= listing.title %></p>
+                    <p class="card-price">
+                      &#8377;<%= listing.price ? listing.price.toLocaleString("en-IN") : '0' %> <span>/ night</span>
+                    </p>
+                  </div>
+                </a>
+                <% if (typeof currentUser !== 'undefined' && currentUser) { %>
+                  <form method="post" action="/wishlist/<%= listing._id %>/toggle" class="wishlist-form">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+                    <button type="submit" class="wishlist-btn" aria-label="Save to wishlist">
+                      <i class="fa-regular fa-heart"></i>
+                    </button>
+                  </form>
+                <% } %>
+              </div>
+            </div>
+          <% }); %>
+        </div>
+        <div class="swiper-button-prev skiper47-btn skiper47-btn-prev" aria-label="Previous">
+          <i class="fa-solid fa-chevron-left"></i>
+        </div>
+        <div class="swiper-button-next skiper47-btn skiper47-btn-next" aria-label="Next">
+          <i class="fa-solid fa-chevron-right"></i>
+        </div>
+        <div class="swiper-pagination skiper47-pagination"></div>
+      </div>
+    </div>
+  </section>
+<% } %>
+
+<!-- 🏙️ City Escapes (Skiper 47 3D Perspective Coverflow) -->
+<% if (typeof cityListings !== 'undefined' && cityListings && cityListings.length > 0) { %>
+  <section class="container-xl pt-5" id="section-cities">
+    <div class="section-row">
+      <div>
+        <h2 class="section-title"><span class="me-2">🏙️</span>Iconic City Stays</h2>
+        <p>Modern lofts, penthouses, and cultural apartments in vibrant downtowns.</p>
+      </div>
+      <a class="link-arrow" href="/listings?category=city">Explore city stays <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+
+    <div class="skiper47-container">
+      <div class="swiper skiper47-swiper">
+        <div class="swiper-wrapper">
+          <% cityListings.forEach((listing) => { %>
+            <div class="swiper-slide skiper47-slide">
+              <div class="listing-card skiper47-card">
+                <a href="/listings/<%= listing._id %>" class="card-link">
+                  <div class="card-media">
+                    <img
+                      src="<%= listing.image && listing.image.url ? listing.image.url : (typeof listing.image === 'string' && listing.image ? listing.image : 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=3840&q=90') %>"
+                      alt="<%= listing.title %>" loading="lazy" />
+                    <span class="card-badge">🏙️ City</span>
+                  </div>
+                  <div class="card-body">
+                    <div class="card-row">
+                      <h3 class="card-title"><%= listing.location %>, <%= listing.country %></h3>
+                      <% if (listing._avgRating) { %>
+                        <span class="card-rating"><i class="fa-solid fa-star"></i> <%= listing._avgRating.toFixed(1) %></span>
+                      <% } else { %>
+                        <span class="card-rating card-rating--new">New</span>
+                      <% } %>
+                    </div>
+                    <p class="card-subtitle"><%= listing.title %></p>
+                    <p class="card-price">
+                      &#8377;<%= listing.price ? listing.price.toLocaleString("en-IN") : '0' %> <span>/ night</span>
+                    </p>
+                  </div>
+                </a>
+                <% if (typeof currentUser !== 'undefined' && currentUser) { %>
+                  <form method="post" action="/wishlist/<%= listing._id %>/toggle" class="wishlist-form">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+                    <button type="submit" class="wishlist-btn" aria-label="Save to wishlist">
+                      <i class="fa-regular fa-heart"></i>
+                    </button>
+                  </form>
+                <% } %>
+              </div>
+            </div>
+          <% }); %>
+        </div>
+        <div class="swiper-button-prev skiper47-btn skiper47-btn-prev" aria-label="Previous">
+          <i class="fa-solid fa-chevron-left"></i>
+        </div>
+        <div class="swiper-button-next skiper47-btn skiper47-btn-next" aria-label="Next">
+          <i class="fa-solid fa-chevron-right"></i>
+        </div>
+        <div class="swiper-pagination skiper47-pagination"></div>
+      </div>
+    </div>
+  </section>
+<% } %>
+
+<!-- ⭐ Featured Stays Worldwide -->
+<% if (typeof featuredListings !== 'undefined' && featuredListings && featuredListings.length > 0) { %>
+  <section class="container-xl pt-5 pb-5" id="section-featured">
+    <div class="section-row">
+      <div>
+        <h2 class="section-title"><span class="me-2">⭐</span>Featured Stays Worldwide</h2>
+        <p>Top picks and guest favorites handpicked for exceptional quality.</p>
+      </div>
+      <a class="link-arrow" href="/listings">View all stays <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+
+    <div class="skiper47-container">
+      <div class="swiper skiper47-swiper">
+        <div class="swiper-wrapper">
+          <% featuredListings.forEach((listing) => { %>
+            <div class="swiper-slide skiper47-slide">
+              <div class="listing-card skiper47-card">
+                <a href="/listings/<%= listing._id %>" class="card-link">
+                  <div class="card-media">
+                    <img
+                      src="<%= listing.image && listing.image.url ? listing.image.url : (typeof listing.image === 'string' && listing.image ? listing.image : 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=3840&q=90') %>"
+                      alt="<%= listing.title %>" loading="lazy" />
+                    <span class="card-badge">⭐ Featured</span>
+                  </div>
+                  <div class="card-body">
+                    <div class="card-row">
+                      <h3 class="card-title"><%= listing.location %>, <%= listing.country %></h3>
+                      <% if (listing._avgRating) { %>
+                        <span class="card-rating"><i class="fa-solid fa-star"></i> <%= listing._avgRating.toFixed(1) %></span>
+                      <% } else { %>
+                        <span class="card-rating card-rating--new">New</span>
+                      <% } %>
+                    </div>
+                    <p class="card-subtitle"><%= listing.title %></p>
+                    <p class="card-price">
+                      &#8377;<%= listing.price ? listing.price.toLocaleString("en-IN") : '0' %> <span>/ night</span>
+                    </p>
+                  </div>
+                </a>
+                <% if (typeof currentUser !== 'undefined' && currentUser) { %>
+                  <form method="post" action="/wishlist/<%= listing._id %>/toggle" class="wishlist-form">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+                    <button type="submit" class="wishlist-btn" aria-label="Save to wishlist">
+                      <i class="fa-regular fa-heart"></i>
+                    </button>
+                  </form>
+                <% } %>
+              </div>
+            </div>
+          <% }); %>
+        </div>
+        <div class="swiper-button-prev skiper47-btn skiper47-btn-prev" aria-label="Previous">
+          <i class="fa-solid fa-chevron-left"></i>
+        </div>
+        <div class="swiper-button-next skiper47-btn skiper47-btn-next" aria-label="Next">
+          <i class="fa-solid fa-chevron-right"></i>
+        </div>
+        <div class="swiper-pagination skiper47-pagination"></div>
+      </div>
+    </div>
+  </section>
+<% } %>
+
+<section class="promo-band">
+  <div class="container-xl promo-band-inner">
+    <div class="promo-copy">
+      <span class="promo-eyebrow">Become a host</span>
+      <h2 class="promo-title">It&rsquo;s easy to start hosting and earn extra income</h2>
+      <p class="promo-text">
+        List your place on ON AIR — set your own price, share your space, and welcome guests from around the world.
+      </p>
+      <a href="/listings/new" class="btn btn-accent btn-lg btn-magnetic" data-magnetic>
+        <i class="fa-solid fa-house-circle-check me-1"></i> Start hosting
+      </a>
+    </div>
+    <div class="promo-art" aria-hidden="true">
+      <div class="promo-art-card promo-art-card--1"><i class="fa-solid fa-key"></i></div>
+      <div class="promo-art-card promo-art-card--2"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+      <div class="promo-art-card promo-art-card--3"><i class="fa-solid fa-map-location-dot"></i></div>
+    </div>
+  </div>
+</section>
+
+<section class="container-xl trust-band">
+  <div class="trust-header">
+    <span class="promo-eyebrow">ON AIR Cover</span>
+    <h2 class="section-title">Every booking includes free protection</h2>
+    <p>Your trip is protected from Host cancellations, listing inaccuracies, and more.</p>
+  </div>
+  <div class="trust-grid">
+    <div class="trust-item">
+      <i class="fa-solid fa-shield-halved"></i>
+      <h4>Booking Protection Guarantee</h4>
+      <p>If a Host cancels on you, find a similar or better home, or we&rsquo;ll refund you.</p>
+    </div>
+    <div class="trust-item">
+      <i class="fa-solid fa-check-double"></i>
+      <h4>Get-What-You-Booked Guarantee</h4>
+      <p>If your stay isn&rsquo;t what you booked, we&rsquo;ll find a similar home or refund you.</p>
+    </div>
+    <div class="trust-item">
+      <i class="fa-solid fa-headset"></i>
+      <h4>24-hour Safety Line</h4>
+      <p>Priority access to specially-trained safety agents, any time, day or night.</p>
+    </div>
+    <div class="trust-item">
+      <i class="fa-solid fa-circle-exclamation"></i>
+      <h4>Guest Support</h4>
+      <p>Fast, friendly, round-the-clock help whenever you need it — before and during your trip.</p>
+    </div>
+  </div>
+</section>

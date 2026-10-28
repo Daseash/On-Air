@@ -1,0 +1,94 @@
+/* ==========================================================================
+   Unlumen UI: Highlight Component (Spring Animated Tracking Highlight)
+   Exact match for unlumen-ui-docs.vercel.app/docs/ui/unlumen/highlight
+   ========================================================================== */
+
+/* Tracking Container */
+.categories-scroll,
+.unlumen-highlight-track,
+[data-unlumen-highlight] {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.35rem !important;
+  isolation: isolate;
+}
+
+/* Category Items: Static Borders and Backgrounds Removed */
+.categories-scroll .category-pill,
+.unlumen-highlight-item,
+.category-pill {
+  position: relative !important;
+  z-index: 2 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  padding: 0.55rem 1.15rem !important;
+  border-radius: 9999px !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: #71717a !important;
+  font-size: 0.88rem !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+  cursor: pointer !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  transition: color 0.22s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.2s ease !important;
+  outline: none !important;
+}
+
+/* High-contrast text on hover or active over the floating dark pill */
+.categories-scroll .category-pill:hover,
+.categories-scroll .category-pill.active,
+.unlumen-highlight-item:hover,
+.unlumen-highlight-item.active {
+  color: #ffffff !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* When track is hovered, active item yields contrast to the hovered item */
+.categories-scroll:hover .category-pill.active:not(:hover) {
+  color: #a1a1aa !important;
+}
+
+/* Emoji scale transition */
+.cat-emoji {
+  font-size: 1.15rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  transition: transform 0.22s ease;
+}
+
+.category-pill:hover .cat-emoji,
+.category-pill.active .cat-emoji {
+  transform: scale(1.15);
+}
+
+/* Single Floating Spring Highlight Pill */
+.unlumen-highlight-pill {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  z-index: 1 !important;
+  border-radius: 9999px !important;
+  background: #18181b !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16) !important;
+  pointer-events: none !important;
+  opacity: 0;
+  transform: translate3d(0, 0, 0);
+  transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1),
+              width 0.28s cubic-bezier(0.2, 0.8, 0.2, 1),
+              height 0.28s cubic-bezier(0.2, 0.8, 0.2, 1),
+              opacity 0.2s ease;
+  will-change: transform, width, height, opacity;
+}
+
+.unlumen-highlight-pill.is-active {
+  opacity: 1 !important;
+}
