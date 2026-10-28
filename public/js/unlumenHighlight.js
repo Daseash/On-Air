@@ -1,7 +1,7 @@
 /**
  * Unlumen UI: Highlight Component Engine
  * Recreates the animated highlight component that tracks elements with smooth spring animations.
- * (unlumen-ui-docs.vercel.app/docs/ui/unlumen/highlight)
+ * Safe, zero-recursion, zero-lag implementation.
  */
 (function (global) {
   "use strict";
@@ -12,7 +12,7 @@
       this.container = container;
       this.container._unlumenHighlightInstance = this;
 
-      // Ensure single floating highlight pill
+      // Find or create single floating highlight pill
       this.pill = this.container.querySelector(".unlumen-highlight-pill");
       if (!this.pill) {
         this.pill = document.createElement("div");
@@ -27,7 +27,6 @@
 
       this.activeItem = null;
       this.hoveredItem = null;
-      this.observer = null;
 
       this.init();
     }
@@ -35,45 +34,38 @@
     init() {
       this.updateActiveItem();
 
-      // Bind events to each item
+      // Bind hover events to items
       this.items.forEach((item) => {
-        item.addEventListener("pointerenter", () => this.handleItemEnter(item));
-        item.addEventListener("focus", () => this.handleItemEnter(item));
+        item.addEventListener("pointerenter", () => {
+          this.hoveredItem = item;
+          this.movePillTo(item);
+        });
+
+        item.addEventListener("click", () => {
+          this.items.forEach((i) => i.classList.remove("active"));
+          item.classList.add("active");
+          this.activeItem = item;
+          this.movePillTo(item);
+        });
       });
 
-      // Pointer leaves the track container -> spring back to active item
-      this.container.addEventListener("pointerleave", () => this.handleTrackLeave());
-      this.container.addEventListener("focusout", (e) => {
-        if (!this.container.contains(e.relatedTarget)) {
-          this.handleTrackLeave();
+      // When pointer leaves the container, glide back to active item
+      this.container.addEventListener("pointerleave", () => {
+        this.hoveredItem = null;
+        this.updateActiveItem();
+        if (this.activeItem) {
+          this.movePillTo(this.activeItem);
+        } else {
+          this.pill.classList.remove("is-active");
         }
       });
 
-      // MutationObserver watches for external active class changes (e.g. scrollspy, click handlers)
-      if ("MutationObserver" in window) {
-        this.observer = new MutationObserver(() => {
-          this.updateActiveItem();
-          if (!this.hoveredItem) {
-            this.syncToCurrent();
-          }
-        });
-
-        this.items.forEach((item) => {
-          this.observer.observe(item, {
-            attributes: true,
-            attributeFilter: ["class"],
-          });
-        });
-      }
-
-      // Sync on resize and horizontal scroll
+      // Update position on window resize
       window.addEventListener("resize", () => this.syncToCurrent(), { passive: true });
-      this.container.addEventListener("scroll", () => this.syncToCurrent(), { passive: true });
 
-      // Staged initial positioning to account for webfont rendering
-      requestAnimationFrame(() => this.syncToCurrent());
-      setTimeout(() => this.syncToCurrent(), 60);
-      setTimeout(() => this.syncToCurrent(), 250);
+      // Staged initial positioning after render
+      setTimeout(() => this.syncToCurrent(), 50);
+      setTimeout(() => this.syncToCurrent(), 200);
     }
 
     updateActiveItem() {
@@ -84,23 +76,8 @@
       return this.activeItem;
     }
 
-    handleItemEnter(item) {
-      this.hoveredItem = item;
-      this.movePillTo(item);
-    }
-
-    handleTrackLeave() {
-      this.hoveredItem = null;
-      this.updateActiveItem();
-      if (this.activeItem) {
-        this.movePillTo(this.activeItem);
-      } else {
-        this.hidePill();
-      }
-    }
-
     movePillTo(target) {
-      if (!target) return;
+      if (!target || !this.pill) return;
 
       const left = target.offsetLeft;
       const top = target.offsetTop;
@@ -111,16 +88,6 @@
       this.pill.style.width = `${width}px`;
       this.pill.style.height = `${height}px`;
       this.pill.classList.add("is-active");
-
-      // Set highlighted class on target, remove from others
-      this.items.forEach((item) => {
-        item.classList.toggle("is-highlighted", item === target);
-      });
-    }
-
-    hidePill() {
-      this.pill.classList.remove("is-active");
-      this.items.forEach((item) => item.classList.remove("is-highlighted"));
     }
 
     syncToCurrent() {
@@ -162,4 +129,3 @@
     Track: UnlumenHighlightTrack,
   };
 })(window);
-

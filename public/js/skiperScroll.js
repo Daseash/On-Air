@@ -258,6 +258,7 @@
           grabCursor: true,
           centeredSlides: true,
           loop: slideCount >= 4,
+          loopAdditionalSlides: 2,
           slidesPerView: 1.25,
           spaceBetween: 20,
           coverflowEffect: {
@@ -274,7 +275,7 @@
             },
             1024: {
               slidesPerView: 2.43,
-              spaceBetween: 40,
+              spaceBetween: 36,
             },
           },
           pagination: {

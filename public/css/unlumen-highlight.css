@@ -40,23 +40,20 @@
   outline: none !important;
 }
 
-/* Hover & Active text states */
-.categories-scroll .category-pill.is-highlighted,
+/* Item hover & active text colors (CSS native - no JS class mutation needed) */
+.categories-scroll .category-pill:hover,
 .categories-scroll .category-pill.active,
-.unlumen-highlight-item.is-highlighted,
+.unlumen-highlight-item:hover,
 .unlumen-highlight-item.active {
-  color: #ffffff !important; /* High-contrast white text over the gliding highlight pill */
+  color: #ffffff !important; /* White text over the gliding highlight pill */
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
 }
 
-/* Non-highlighted hover subtle state if not active */
-.categories-scroll .category-pill:hover:not(.is-highlighted):not(.active) {
-  color: #27272a !important;
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
+/* When another item is hovered, active item temporarily yields contrast */
+.categories-scroll:hover .category-pill.active:not(:hover) {
+  color: #a1a1aa !important;
 }
 
 /* Emoji scale transition */
@@ -65,13 +62,12 @@
   line-height: 1;
   display: inline-flex;
   align-items: center;
-  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: transform 0.22s ease;
 }
 
 .category-pill:hover .cat-emoji,
-.category-pill.is-highlighted .cat-emoji,
 .category-pill.active .cat-emoji {
-  transform: scale(1.18);
+  transform: scale(1.15);
 }
 
 /* ─── The Single Floating Spring Highlight Pill ─── */
@@ -82,19 +78,18 @@
   z-index: 1 !important;
   border-radius: 9999px !important;
   background: #18181b !important; /* Deep dark pill matching Unlumen UI Highlight */
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16), inset 0 1px 1px rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.14) !important;
   pointer-events: none !important;
   opacity: 0;
   transform: translate3d(0, 0, 0);
   /* Unlumen UI Spring physics curve */
-  transition: transform 0.32s cubic-bezier(0.2, 0.8, 0.2, 1),
-              width 0.32s cubic-bezier(0.2, 0.8, 0.2, 1),
-              height 0.32s cubic-bezier(0.2, 0.8, 0.2, 1),
-              opacity 0.22s ease;
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+              width 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+              height 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+              opacity 0.2s ease;
   will-change: transform, width, height, opacity;
 }
 
 .unlumen-highlight-pill.is-active {
   opacity: 1 !important;
 }
-
