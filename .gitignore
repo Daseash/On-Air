@@ -22,3 +22,5 @@ public/uploads/*
 .vercel
 
 .playwright-mcp/
+
+.vscode/

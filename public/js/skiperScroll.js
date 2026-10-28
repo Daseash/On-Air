@@ -234,12 +234,169 @@
     });
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initAllSkiperScrollers);
-  } else {
+  /**
+   * Skiper 47: 3D Perspective Coverflow Carousel Initialization
+   * Exact match for skiper-ui.com/v1/skiper47 Carousel_001
+   */
+  function initSkiper47Carousels() {
+    if (typeof Swiper === "undefined") {
+      setTimeout(initSkiper47Carousels, 60);
+      return;
+    }
+
+    const swiperContainers = document.querySelectorAll(".skiper47-swiper");
+    swiperContainers.forEach((container) => {
+      if (container.swiper) return;
+
+      const slides = container.querySelectorAll(".swiper-slide");
+      const slideCount = slides.length;
+      if (slideCount === 0) return;
+
+      try {
+        new Swiper(container, {
+          effect: "coverflow",
+          grabCursor: true,
+          centeredSlides: true,
+          loop: slideCount >= 4,
+          slidesPerView: 1.25,
+          spaceBetween: 20,
+          coverflowEffect: {
+            rotate: 0,
+            slideShadows: false,
+            stretch: 0,
+            depth: 100,
+            modifier: 2.5,
+          },
+          breakpoints: {
+            640: {
+              slidesPerView: 1.75,
+              spaceBetween: 28,
+            },
+            1024: {
+              slidesPerView: 2.43,
+              spaceBetween: 40,
+            },
+          },
+          pagination: {
+            el: container.querySelector(".skiper47-pagination"),
+            clickable: true,
+          },
+          navigation: {
+            nextEl: container.querySelector(".skiper47-btn-next"),
+            prevEl: container.querySelector(".skiper47-btn-prev"),
+          },
+          keyboard: {
+            enabled: true,
+            onlyInViewport: true,
+          },
+        });
+      } catch (err) {
+        console.warn("Skiper 47 Swiper initialization notice:", err);
+      }
+    });
+  }
+
+  /**
+   * Category Bar Smooth Navigation & Scroll Spy Synchronization
+   */
+  function initCategoryBarSync() {
+    const catScroll = document.getElementById("category-scroll");
+    if (!catScroll) return;
+
+    const categoryMap = {
+      all: "section-all",
+      beach: "section-beach",
+      "amazing-views": "section-views",
+      trending: "section-trending",
+      cabin: "section-cabins",
+      city: "section-cities",
+    };
+
+    const pills = catScroll.querySelectorAll(".category-pill");
+    pills.forEach((pill) => {
+      pill.addEventListener("click", function (e) {
+        const cat = pill.getAttribute("data-category");
+        const targetId = categoryMap[cat];
+        const targetSection = targetId ? document.getElementById(targetId) : null;
+
+        // If current page contains the section (e.g. Home page), smooth scroll instead of page reload
+        if (targetSection) {
+          e.preventDefault();
+          pills.forEach((p) => p.classList.remove("active"));
+          pill.classList.add("active");
+
+          const navHeight = 80;
+          const targetPos =
+            targetSection.getBoundingClientRect().top + window.pageYOffset - navHeight;
+
+          window.scrollTo({
+            top: targetPos,
+            behavior: "smooth",
+          });
+
+          // Refresh swiper perspective layout
+          const swiperEl = targetSection.querySelector(".skiper47-swiper");
+          if (swiperEl && swiperEl.swiper) {
+            swiperEl.swiper.update();
+          }
+        }
+      });
+    });
+
+    // IntersectionObserver to sync category bar active pill during scroll
+    if ("IntersectionObserver" in window) {
+      const observerOptions = {
+        root: null,
+        rootMargin: "-20% 0px -60% 0px",
+        threshold: 0,
+      };
+
+      const sectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const sectionId = entry.target.id;
+            for (const [cat, id] of Object.entries(categoryMap)) {
+              if (id === sectionId) {
+                pills.forEach((p) => {
+                  const isActive = p.getAttribute("data-category") === cat;
+                  p.classList.toggle("active", isActive);
+                  if (isActive) {
+                    p.scrollIntoView({
+                      behavior: "smooth",
+                      block: "nearest",
+                      inline: "center",
+                    });
+                  }
+                });
+                break;
+              }
+            }
+          }
+        });
+      }, observerOptions);
+
+      Object.values(categoryMap).forEach((id) => {
+        const sec = document.getElementById(id);
+        if (sec) sectionObserver.observe(sec);
+      });
+    }
+  }
+
+  function initAll() {
     initAllSkiperScrollers();
+    initSkiper47Carousels();
+    initCategoryBarSync();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initAll);
+  } else {
+    initAll();
   }
 
   global.SkiperScroll = SkiperScroll;
   global.initAllSkiperScrollers = initAllSkiperScrollers;
+  global.initSkiper47Carousels = initSkiper47Carousels;
+  global.initCategoryBarSync = initCategoryBarSync;
 })(window);
+
