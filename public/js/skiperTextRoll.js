@@ -86,3 +86,4 @@
 
   global.initTextRoll = initTextRollElements;
 })(window);
+

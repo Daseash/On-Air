@@ -1,6 +1,7 @@
 /* ==========================================================================
    Skiper 47: 3D Perspective Coverflow Carousel (Swiper.js)
    Exact match for skiper-ui.com/v1/skiper47 Carousel_001
+   Optimized for ultra-smooth 60-120fps hardware acceleration
    ========================================================================== */
 
 .skiper47-container {
@@ -15,11 +16,17 @@
   width: 100%;
   perspective: 1200px;
   -webkit-perspective: 1200px;
-  padding-top: 1.25rem !important;
-  padding-bottom: 54px !important; /* Space for pagination bullets */
+  padding-top: 1rem !important;
+  padding-bottom: 50px !important; /* Space for pagination bullets */
   overflow: hidden !important;
   user-select: none;
   -webkit-user-select: none;
+  touch-action: pan-y pinch-zoom;
+}
+
+.skiper47-swiper .swiper-wrapper {
+  transform-style: preserve-3d;
+  will-change: transform;
 }
 
 .skiper47-slide {
@@ -28,10 +35,15 @@
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
+  transform-style: preserve-3d;
+  will-change: transform;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
-/* Card inside 3D Coverflow slide */
-.skiper47-card {
+/* Card inside 3D Coverflow slide - zero transitions to avoid drag stutter */
+.skiper47-card,
+.skiper47-swiper .listing-card {
   width: 100% !important;
   max-width: 440px !important;
   margin: 0 auto;
@@ -40,9 +52,12 @@
   background: #ffffff;
   border: 1px solid var(--border-soft, #e2e8f0);
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
-  transition: box-shadow 0.3s ease, border-color 0.3s ease;
   display: flex;
   flex-direction: column;
+  transition: none !important; /* Prevent CSS transitions from fighting Swiper drag */
+  will-change: transform;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .skiper47-card .card-media {
@@ -57,12 +72,10 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
   display: block;
-}
-
-.skiper47-card:hover .card-media img {
-  transform: scale(1.05);
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 /* Active center card vs Inactive side cards */
@@ -74,7 +87,7 @@
 
 .swiper-slide:not(.swiper-slide-active) {
   opacity: 0.65;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.25s ease;
 }
 
 .swiper-slide:not(.swiper-slide-active):hover {

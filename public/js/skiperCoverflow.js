@@ -1,7 +1,7 @@
 /**
  * Skiper 47: 3D Perspective Coverflow Carousel Controller
  * Recreates skiper-ui.com/v1/skiper47 Carousel_001 with Swiper.js
- * 100% native vertical page scrolling preserved.
+ * Optimized for butter-smooth 60-120fps touch & mouse sliding.
  */
 (function (global) {
   "use strict";
@@ -23,18 +23,25 @@
       try {
         new Swiper(container, {
           effect: "coverflow",
+          speed: 360,
           grabCursor: true,
           centeredSlides: true,
           loop: slideCount >= 4,
           loopAdditionalSlides: 2,
           slidesPerView: 1.25,
           spaceBetween: 16,
+          touchRatio: 1.15,
+          touchAngle: 45,
+          threshold: 4,
+          watchSlidesProgress: true,
+          resistance: true,
+          resistanceRatio: 0.65,
           coverflowEffect: {
             rotate: 0,
             slideShadows: false,
             stretch: 0,
-            depth: 100,
-            modifier: 2.5,
+            depth: 90,
+            modifier: 2.2,
           },
           breakpoints: {
             640: {

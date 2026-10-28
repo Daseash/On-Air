@@ -54,3 +54,4 @@
 
   global.MagneticButton = MagneticButton;
 })(window);
+
