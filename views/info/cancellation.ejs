@@ -1,0 +1,118 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="info-page-container">
+  <div class="info-header text-center">
+    <span class="info-header-badge"><i class="fa-solid fa-rotate-left"></i> Policy & Refunds</span>
+    <h1>Cancellation Options & Refund Policies</h1>
+    <p class="mx-auto">We believe in transparent, predictable cancellation rules so that guests can travel with peace of mind and hosts can prepare with confidence.</p>
+  </div>
+
+  <!-- Policy Tiers Grid -->
+  <div class="info-section">
+    <h2 class="info-section-title"><i class="fa-solid fa-clock-rotate-left"></i> Standard Cancellation Tiers</h2>
+    <div class="row g-4">
+      <!-- Tier 1: Free -->
+      <div class="col-md-4">
+        <div class="info-card h-100 border-2" style="border-color: #22c55e !important;">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <span class="badge bg-success rounded-pill px-3 py-2 text-white fw-bold">100% Full Refund</span>
+            <i class="fa-solid fa-circle-check text-success fs-4"></i>
+          </div>
+          <h3 class="fw-bold">More than 48 hours</h3>
+          <p class="text-muted">Cancel at least 48 hours prior to the 2:00 PM check-in time of your reservation date.</p>
+          <ul class="small text-muted ps-3 mb-0">
+            <li>100% refund of nightly stay costs</li>
+            <li>Full refund of cleaning and service fees</li>
+            <li>Zero cancellation penalty</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Tier 2: 50% -->
+      <div class="col-md-4">
+        <div class="info-card h-100 border-2" style="border-color: #eab308 !important;">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <span class="badge bg-warning rounded-pill px-3 py-2 text-dark fw-bold">50% Partial Refund</span>
+            <i class="fa-solid fa-triangle-exclamation text-warning fs-4"></i>
+          </div>
+          <h3 class="fw-bold">48 to 24 hours</h3>
+          <p class="text-muted">Cancel between 48 hours and 24 hours prior to scheduled 2:00 PM check-in.</p>
+          <ul class="small text-muted ps-3 mb-0">
+            <li>50% refund of nightly accommodation cost</li>
+            <li>Cleaning fee refunded if listing was unentered</li>
+            <li>ON AIR service fee retained</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Tier 3: Non-refundable -->
+      <div class="col-md-4">
+        <div class="info-card h-100 border-2" style="border-color: #ef4444 !important;">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <span class="badge bg-danger rounded-pill px-3 py-2 text-white fw-bold">Non-refundable</span>
+            <i class="fa-solid fa-circle-xmark text-danger fs-4"></i>
+          </div>
+          <h3 class="fw-bold">Within 24 hours</h3>
+          <p class="text-muted">Cancellations made less than 24 hours before check-in or reservation no-shows.</p>
+          <ul class="small text-muted ps-3 mb-0">
+            <li>Non-refundable nightly accommodation fees</li>
+            <li>Protects hosts who reserved and held the space</li>
+            <li>Taxes or municipal fees refunded where required by law</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- How to Cancel -->
+  <div class="info-section">
+    <h2 class="info-section-title"><i class="fa-solid fa-arrow-pointer"></i> How to Cancel a Reservation</h2>
+    <div class="bg-white border rounded-3 p-4">
+      <div class="info-timeline-step">
+        <div class="info-step-num">1</div>
+        <div>
+          <h4 class="h6 fw-bold mb-1">Open My Trips</h4>
+          <p class="small text-muted mb-0">Log in to your account and navigate to <a href="/bookings/my-trips" class="fw-bold">My Trips</a> from the user menu.</p>
+        </div>
+      </div>
+      <div class="info-timeline-step">
+        <div class="info-step-num">2</div>
+        <div>
+          <h4 class="h6 fw-bold mb-1">Select the Booking</h4>
+          <p class="small text-muted mb-0">Find the upcoming reservation you wish to cancel and click the <strong>Cancel Trip</strong> button.</p>
+        </div>
+      </div>
+      <div class="info-timeline-step mb-0">
+        <div class="info-step-num">3</div>
+        <div>
+          <h4 class="h6 fw-bold mb-1">Review Refund Summary & Confirm</h4>
+          <p class="small text-muted mb-0">A dialog will display your calculated refund breakdown. Confirm the cancellation. Refunds are credited back to your original payment method in <strong>5–7 business days</strong>.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Extenuating Circumstances -->
+  <div class="info-section">
+    <h2 class="info-section-title"><i class="fa-solid fa-umbrella"></i> Extenuating Circumstances Policy</h2>
+    <div class="p-4 border rounded-3 bg-white">
+      <p class="text-muted mb-2">Unforeseen events may occur beyond anyone's control. ON AIR may override standard cancellation rules and grant full refunds with documentation for:</p>
+      <ul class="text-muted small ps-3 mb-0">
+        <li>Declared public health emergencies or government-mandated travel restrictions.</li>
+        <li>Severe natural disasters, earthquakes, or flight cancellations preventing travel.</li>
+        <li>Severe property damage rendering the listing uninhabitable at check-in.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Manage Trips CTA -->
+  <div class="info-cta-box">
+    <div>
+      <h3 class="mb-1" style="font-family: var(--font-display); font-weight: 700;">Looking to manage an existing trip?</h3>
+      <p class="mb-0 text-muted">Review booking details, arrival guidelines, or change dates directly.</p>
+    </div>
+    <div>
+      <a href="/bookings/my-trips" class="btn btn-dark rounded-pill px-4">Go to My Trips</a>
+    </div>
+  </div>
+</div>

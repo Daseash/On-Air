@@ -33,6 +33,7 @@ const bookingRouter = require("./routes/booking.js");
 const userRouter = require("./routes/user.js");
 const wishlistRouter = require("./routes/wishlist.js");
 const ragRouter = require("./routes/rag.js");
+const infoRouter = require("./routes/info.js");
 
 
 // CORS Configuration for Vite / React Frontend
@@ -177,6 +178,7 @@ app.use("/bookings", bookingRouter);
 app.use("/", userRouter);
 app.use("/wishlist", wishlistRouter);
 app.use("/rag", ragRouter);
+app.use("/", infoRouter);
 
 // 404 Route Catch-All
 app.use((req, res, next) => {

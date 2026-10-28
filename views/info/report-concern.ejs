@@ -1,0 +1,64 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="info-page-container">
+  <div class="info-header text-center">
+    <span class="info-header-badge"><i class="fa-solid fa-flag"></i> Trust & Safety</span>
+    <h1>Report a Concern</h1>
+    <p class="mx-auto">If you observed a safety issue, listing discrepancy, neighborhood disturbance, or policy violation, please let us know so we can investigate immediately.</p>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="alert alert-warning d-flex align-items-center mb-4" role="alert">
+        <i class="fa-solid fa-triangle-exclamation fs-4 me-3 text-warning"></i>
+        <div class="small">
+          <strong>Immediate Danger?</strong> If you or someone else is in imminent physical danger or requires medical help, please contact emergency emergency responders (<strong>112</strong> in India) immediately.
+        </div>
+      </div>
+
+      <div class="info-form-card mx-auto w-100">
+        <form action="/report-concern" method="POST">
+          <input type="hidden" name="_csrf" value="<%= (typeof _csrf !== 'undefined') ? _csrf : '' %>" />
+
+          <div class="mb-3">
+            <label for="concernCategory" class="form-label fw-bold small">Category of Concern <span class="text-danger">*</span></label>
+            <select class="form-select" id="concernCategory" name="category" required>
+              <option value="" selected disabled>Select the nature of your concern...</option>
+              <option value="safety">Safety or physical hazard at the property</option>
+              <option value="misleading">Inaccurate or misleading listing information</option>
+              <option value="noise">Excessive noise or neighborhood disruption</option>
+              <option value="fraud">Suspicious request to pay outside of ON AIR</option>
+              <option value="misconduct">Host or guest inappropriate behavior</option>
+              <option value="other">Other policy concern</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="listingReference" class="form-label fw-bold small">Listing Title, URL, or Reservation ID</label>
+            <input type="text" class="form-control" id="listingReference" name="reference" placeholder="e.g. Luxury Beachfront Villa in Goa or RES-98210" />
+          </div>
+
+          <div class="mb-3">
+            <label for="concernDetails" class="form-label fw-bold small">Detailed Description <span class="text-danger">*</span></label>
+            <textarea class="form-control" id="concernDetails" name="details" rows="5" placeholder="Please provide specific details about what occurred, dates, and any relevant circumstances..." required></textarea>
+          </div>
+
+          <div class="row g-3 mb-4">
+            <div class="col-md-6">
+              <label for="reporterName" class="form-label fw-bold small">Your Full Name <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="reporterName" name="name" value="<%= (typeof currentUser !== 'undefined' && currentUser) ? (currentUser.username || '') : '' %>" required />
+            </div>
+            <div class="col-md-6">
+              <label for="reporterEmail" class="form-label fw-bold small">Your Email Address <span class="text-danger">*</span></label>
+              <input type="email" class="form-control" id="reporterEmail" name="email" value="<%= (typeof currentUser !== 'undefined' && currentUser) ? (currentUser.email || '') : '' %>" required />
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-dark w-100 py-2 rounded-pill fw-bold">
+            <i class="fa-solid fa-paper-plane me-2"></i> Submit Confidential Report
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

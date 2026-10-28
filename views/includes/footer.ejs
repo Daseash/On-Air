@@ -1,11 +1,11 @@
 <footer class="site-footer">
   <div class="footer-top">
-    <a href="#" class="footer-lang">
-      <i class="fa-solid fa-globe"></i> English (IN) <i class="fa-solid fa-angle-down"></i>
-    </a>
-    <a href="#" class="footer-lang">
-      &#8377; INR &nbsp;<i class="fa-solid fa-angle-down"></i>
-    </a>
+    <button class="footer-lang border-0 bg-transparent p-0" type="button" data-bs-toggle="modal" data-bs-target="#langCurrencyModal" aria-label="Select language">
+      <i class="fa-solid fa-globe"></i> <span class="footer-lang-text">English (IN)</span> <i class="fa-solid fa-angle-down"></i>
+    </button>
+    <button class="footer-lang border-0 bg-transparent p-0" type="button" data-bs-toggle="modal" data-bs-target="#langCurrencyModal" aria-label="Select currency">
+      <span class="footer-currency-text">&#8377; INR</span> &nbsp;<i class="fa-solid fa-angle-down"></i>
+    </button>
   </div>
 
   <div class="footer-grid">
@@ -20,46 +20,210 @@
         Discover unique stays and unforgettable experiences around the world.
       </p>
       <div class="footer-social">
-        <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-        <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-        <a href="#" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
-        <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://x.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
       </div>
     </div>
 
     <div class="footer-col">
       <h5>Support</h5>
-      <a href="#">Help Center</a>
-      <a href="#">Safety information</a>
-      <a href="#">Cancellation options</a>
-      <a href="#">Report a concern</a>
+      <a href="/help">Help Center</a>
+      <a href="/safety">Safety information</a>
+      <a href="/cancellation">Cancellation options</a>
+      <a href="/report-concern">Report a concern</a>
     </div>
 
     <div class="footer-col">
       <h5>Hosting</h5>
       <a href="/listings/new">Add a new stay</a>
-      <a href="#">Host resources</a>
-      <a href="#">Community forum</a>
-      <a href="#">Responsible hosting</a>
+      <a href="/host-resources">Host resources</a>
+      <a href="/community">Community forum</a>
+      <a href="/responsible-hosting">Responsible hosting</a>
     </div>
 
     <div class="footer-col">
       <h5>On Air</h5>
-      <a href="#">About us</a>
-      <a href="#">Careers</a>
-      <a href="#">Press</a>
-      <a href="#">Contact</a>
+      <a href="/about">About us</a>
+      <a href="/careers">Careers</a>
+      <a href="/press">Press</a>
+      <a href="/contact">Contact</a>
     </div>
   </div>
 
   <div class="footer-bottom">
     <span>&copy; 2026 On Air Private Limited. All rights reserved.</span>
     <div class="footer-bottom-links">
-      <a href="#">Privacy</a>
-      <a href="#">Terms</a>
-      <a href="#">Sitemap</a>
-      <a href="#"><i class="fa-solid fa-globe me-1"></i> English (IN)</a>
-      <a href="#">&#8377; INR</a>
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+      <a href="/sitemap">Sitemap</a>
+      <a href="#" data-bs-toggle="modal" data-bs-target="#langCurrencyModal"><i class="fa-solid fa-globe me-1"></i> <span class="footer-lang-text">English (IN)</span></a>
+      <a href="#" data-bs-toggle="modal" data-bs-target="#langCurrencyModal"><span class="footer-currency-text">&#8377; INR</span></a>
     </div>
   </div>
 </footer>
+
+<!-- Language and Currency Selection Modal -->
+<div class="modal fade lang-currency-modal" id="langCurrencyModal" tabindex="-1" aria-labelledby="langCurrencyModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content rounded-4 border-0 shadow">
+      <div class="modal-header border-bottom">
+        <ul class="nav nav-pills" id="langCurrencyTabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active rounded-pill fw-bold" id="lang-tab" data-bs-toggle="pill" data-bs-target="#pills-lang" type="button" role="tab" aria-selected="true">
+              <i class="fa-solid fa-globe me-1"></i> Language & Region
+            </button>
+          </li>
+          <li class="nav-item ms-2" role="presentation">
+            <button class="nav-link rounded-pill fw-bold" id="currency-tab" data-bs-toggle="pill" data-bs-target="#pills-currency" type="button" role="tab" aria-selected="false">
+              <i class="fa-solid fa-coins me-1"></i> Currency
+            </button>
+          </li>
+        </ul>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body p-4">
+        <div class="tab-content" id="pills-tabContent">
+          <!-- Languages Tab -->
+          <div class="tab-pane fade show active" id="pills-lang" role="tabpanel" aria-labelledby="lang-tab">
+            <h6 class="fw-bold mb-3">Suggested languages</h6>
+            <div class="lang-currency-grid mb-4">
+              <div class="lang-currency-item active" data-lang="English (IN)">
+                <span class="item-title">English</span>
+                <span class="item-sub">India</span>
+              </div>
+              <div class="lang-currency-item" data-lang="English (US)">
+                <span class="item-title">English</span>
+                <span class="item-sub">United States</span>
+              </div>
+              <div class="lang-currency-item" data-lang="English (UK)">
+                <span class="item-title">English</span>
+                <span class="item-sub">United Kingdom</span>
+              </div>
+              <div class="lang-currency-item" data-lang="हिन्दी (IN)">
+                <span class="item-title">हिन्दी</span>
+                <span class="item-sub">भारत</span>
+              </div>
+              <div class="lang-currency-item" data-lang="Español">
+                <span class="item-title">Español</span>
+                <span class="item-sub">España</span>
+              </div>
+              <div class="lang-currency-item" data-lang="Français">
+                <span class="item-title">Français</span>
+                <span class="item-sub">France</span>
+              </div>
+              <div class="lang-currency-item" data-lang="Deutsch">
+                <span class="item-title">Deutsch</span>
+                <span class="item-sub">Deutschland</span>
+              </div>
+              <div class="lang-currency-item" data-lang="日本語">
+                <span class="item-title">日本語</span>
+                <span class="item-sub">日本</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Currency Tab -->
+          <div class="tab-pane fade" id="pills-currency" role="tabpanel" aria-labelledby="currency-tab">
+            <h6 class="fw-bold mb-3">Choose a currency</h6>
+            <div class="lang-currency-grid">
+              <div class="lang-currency-item active" data-currency="₹ INR">
+                <span class="item-title">Indian Rupee</span>
+                <span class="item-sub">&#8377; INR</span>
+              </div>
+              <div class="lang-currency-item" data-currency="$ USD">
+                <span class="item-title">US Dollar</span>
+                <span class="item-sub">$ USD</span>
+              </div>
+              <div class="lang-currency-item" data-currency="€ EUR">
+                <span class="item-title">Euro</span>
+                <span class="item-sub">€ EUR</span>
+              </div>
+              <div class="lang-currency-item" data-currency="£ GBP">
+                <span class="item-title">British Pound</span>
+                <span class="item-sub">£ GBP</span>
+              </div>
+              <div class="lang-currency-item" data-currency="¥ JPY">
+                <span class="item-title">Japanese Yen</span>
+                <span class="item-sub">¥ JPY</span>
+              </div>
+              <div class="lang-currency-item" data-currency="A$ AUD">
+                <span class="item-title">Australian Dollar</span>
+                <span class="item-sub">A$ AUD</span>
+              </div>
+              <div class="lang-currency-item" data-currency="C$ CAD">
+                <span class="item-title">Canadian Dollar</span>
+                <span class="item-sub">C$ CAD</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    // Language & Currency selector interaction
+    const savedLang = localStorage.getItem('onair_user_lang');
+    const savedCurrency = localStorage.getItem('onair_user_currency');
+
+    function updateLabels(lang, currency) {
+      if (lang) {
+        document.querySelectorAll('.footer-lang-text').forEach((el) => {
+          el.textContent = lang;
+        });
+      }
+      if (currency) {
+        document.querySelectorAll('.footer-currency-text').forEach((el) => {
+          el.textContent = currency;
+        });
+      }
+    }
+
+    if (savedLang || savedCurrency) {
+      updateLabels(savedLang, savedCurrency);
+    }
+
+    document.querySelectorAll('.lang-currency-item[data-lang]').forEach((item) => {
+      if (savedLang && item.getAttribute('data-lang') === savedLang) {
+        document.querySelectorAll('.lang-currency-item[data-lang]').forEach((i) => i.classList.remove('active'));
+        item.classList.add('active');
+      }
+      item.addEventListener('click', function () {
+        const val = this.getAttribute('data-lang');
+        localStorage.setItem('onair_user_lang', val);
+        document.querySelectorAll('.lang-currency-item[data-lang]').forEach((i) => i.classList.remove('active'));
+        this.classList.add('active');
+        updateLabels(val, null);
+        const modalEl = document.getElementById('langCurrencyModal');
+        if (modalEl && window.bootstrap) {
+          const m = bootstrap.Modal.getInstance(modalEl);
+          if (m) m.hide();
+        }
+      });
+    });
+
+    document.querySelectorAll('.lang-currency-item[data-currency]').forEach((item) => {
+      if (savedCurrency && item.getAttribute('data-currency') === savedCurrency) {
+        document.querySelectorAll('.lang-currency-item[data-currency]').forEach((i) => i.classList.remove('active'));
+        item.classList.add('active');
+      }
+      item.addEventListener('click', function () {
+        const val = this.getAttribute('data-currency');
+        localStorage.setItem('onair_user_currency', val);
+        document.querySelectorAll('.lang-currency-item[data-currency]').forEach((i) => i.classList.remove('active'));
+        this.classList.add('active');
+        updateLabels(null, val);
+        const modalEl = document.getElementById('langCurrencyModal');
+        if (modalEl && window.bootstrap) {
+          const m = bootstrap.Modal.getInstance(modalEl);
+          if (m) m.hide();
+        }
+      });
+    });
+  })();
+</script>

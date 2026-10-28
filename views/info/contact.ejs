@@ -1,0 +1,85 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="info-page-container">
+  <div class="info-header text-center">
+    <span class="info-header-badge"><i class="fa-solid fa-headset"></i> Support & Inquiries</span>
+    <h1>Contact the ON AIR Team</h1>
+    <p class="mx-auto">Have a question about a stay, need assistance with your reservation, or want to share feedback? We're here to help.</p>
+  </div>
+
+  <div class="row g-5">
+    <!-- Contact Info Column -->
+    <div class="col-lg-5">
+      <div class="info-card mb-4">
+        <div class="info-card-icon"><i class="fa-solid fa-sparkles"></i></div>
+        <h3>Instant AI Concierge (E.D.I.T.H.)</h3>
+        <p>Get instant answers about listings, house rules, dates, and cancellation policies right away.</p>
+        <button class="btn btn-dark btn-sm rounded-pill mt-auto" type="button" onclick="document.getElementById('rag-toggle-btn') && document.getElementById('rag-toggle-btn').click();">
+          <i class="fa-solid fa-comments me-1"></i> Start Live Chat
+        </button>
+      </div>
+
+      <div class="info-card mb-4">
+        <div class="info-card-icon"><i class="fa-solid fa-envelope"></i></div>
+        <h3>Email Support</h3>
+        <p>For detailed inquiries, billing assistance, or account requests.</p>
+        <a href="mailto:support@onair.com" class="fw-bold text-dark mt-auto">support@onair.com</a>
+        <small class="text-muted d-block mt-1">Average response time: &lt; 12 hours</small>
+      </div>
+
+      <div class="info-card">
+        <div class="info-card-icon"><i class="fa-solid fa-phone"></i></div>
+        <h3>Phone Support</h3>
+        <p>Available for urgent booking inquiries and check-in support.</p>
+        <span class="fw-bold text-dark fs-5 mt-auto">1800-266-247</span>
+        <small class="text-muted d-block mt-1">Mon–Sun: 9:00 AM – 9:00 PM IST</small>
+      </div>
+    </div>
+
+    <!-- Contact Form Column -->
+    <div class="col-lg-7">
+      <div class="info-form-card w-100">
+        <h3 class="h5 fw-bold mb-3" style="font-family: var(--font-display);">Send us a Message</h3>
+        <form action="/contact" method="POST">
+          <input type="hidden" name="_csrf" value="<%= (typeof _csrf !== 'undefined') ? _csrf : '' %>" />
+
+          <div class="mb-3">
+            <label for="contactTopic" class="form-label fw-bold small">Topic <span class="text-danger">*</span></label>
+            <select class="form-select" id="contactTopic" name="topic" required>
+              <option value="general" <%= (typeof concernParam !== 'undefined' && !concernParam) ? 'selected' : '' %>>General Question or Inquiry</option>
+              <option value="booking">Existing Reservation or Booking Help</option>
+              <option value="hosting">Hosting & Listing Assistance</option>
+              <option value="concern" <%= (typeof concernParam !== 'undefined' && concernParam) ? 'selected' : '' %>>Report a Concern or Safety Issue</option>
+              <option value="feedback">Product Feedback or Suggestion</option>
+            </select>
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label for="contactName" class="form-label fw-bold small">Your Name <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="contactName" name="name" value="<%= (typeof currentUser !== 'undefined' && currentUser) ? (currentUser.username || '') : '' %>" required />
+            </div>
+            <div class="col-md-6">
+              <label for="contactEmail" class="form-label fw-bold small">Your Email <span class="text-danger">*</span></label>
+              <input type="email" class="form-control" id="contactEmail" name="email" value="<%= (typeof currentUser !== 'undefined' && currentUser) ? (currentUser.email || '') : '' %>" required />
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="contactSubject" class="form-label fw-bold small">Subject <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="contactSubject" name="subject" placeholder="What can we help you with?" required />
+          </div>
+
+          <div class="mb-4">
+            <label for="contactMessage" class="form-label fw-bold small">Message <span class="text-danger">*</span></label>
+            <textarea class="form-control" id="contactMessage" name="message" rows="5" placeholder="Please describe your question or issue in detail..." required></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-dark w-100 py-2 rounded-pill fw-bold">
+            <i class="fa-solid fa-paper-plane me-1"></i> Send Message
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
