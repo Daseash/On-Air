@@ -4,19 +4,13 @@
       <svg class="nav-logo-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" aria-hidden="true" style="fill: currentColor; width: 32px; height: 32px; flex-shrink: 0;">
         <path d="M16 1c2.008 0 3.463.963 4.751 3.269l.533 1.025c1.954 3.83 6.114 12.54 7.1 14.836l.145.353c.667 1.591.91 2.472.96 3.396l.011.321c0 4.542-3.704 7.8-8.5 7.8-2.613 0-4.992-1.077-6.5-2.73-1.508 1.653-3.887 2.73-6.5 2.73-4.796 0-8.5-3.258-8.5-7.8 0-1.12.274-2.222.97-3.717l.147-.353c.985-2.296 5.145-11.006 7.1-14.836l.533-1.025C8.537 1.963 9.992 1 12 1h4zm0 2.2c-1.298 0-2.316.634-3.414 2.658l-.512.986c-1.936 3.792-6.082 12.472-7.045 14.717l-.147.353C4.26 23.23 4.1 24.032 4.1 24.8c0 3.308 2.692 5.6 6.3 5.6 2.215 0 4.228-1.002 5.344-2.607l.256-.393.256.393c1.116 1.605 3.129 2.607 5.344 2.607 3.608 0 6.3-2.292 6.3-5.6 0-.768-.16-1.57-.782-2.886l-.145-.353c-.963-2.245-5.109-10.925-7.045-14.717l-.512-.986C18.316 3.834 17.298 3.2 16 3.2zm0 13.8c2.426 0 4.4 1.974 4.4 4.4 0 2.247-1.688 4.098-3.87 4.368l-.23.016-.3-.016c-2.182-.27-3.87-2.121-3.87-4.368 0-2.426 1.974-4.4 4.4-4.4zm0 2.2c-1.215 0-2.2.985-2.2 2.2 0 1.134.86 2.067 1.965 2.186l.235.014.235-.014c1.105-.119 1.965-1.052 1.965-2.186 0-1.215-.985-2.2-2.2-2.2z"/>
       </svg>
-      <span class="nav-logo-name text-roll" data-text-roll="ON AIR">ON AIR</span>
+      <span class="nav-logo-name">ON AIR</span>
     </a>
 
     <div class="nav-actions">
       <a href="/listings/new" class="nav-host-link">
-        <span class="text-roll" data-text-roll="Become a host">Become a host</span>
+        Become a host
       </a>
-
-      <!-- Skiper 58 Navigation Button Trigger -->
-      <button class="nav-skiper58-trigger" type="button" aria-label="Open Navigation Menu" data-skiper58-open title="Text Roll Menu (Skiper 58)">
-        <i class="fa-solid fa-bars-staggered"></i>
-        <span class="text-roll" data-text-roll="Menu">Menu</span>
-      </button>
 
       <button class="nav-icon-btn" type="button" aria-label="Language" data-bs-toggle="modal" data-bs-target="#langCurrencyModal">
         <span class="material-symbols-outlined nav-mat-icon">language</span>
@@ -35,105 +29,22 @@
         </button>
 
         <div class="nav-user-menu" id="nav-user-menu">
-          <a href="#" data-skiper58-open style="font-weight: 700; color: #18181b;">
-            <i class="fa-solid fa-compass me-2"></i>
-            <span class="text-roll" data-text-roll="Text Roll Menu">Text Roll Menu</span>
-            <span class="badge bg-dark ms-auto" style="font-size: 0.65rem; border-radius: 9999px;">Skiper 58</span>
-          </a>
-          <hr style="margin: 0.4rem 0;" />
-
           <% if (typeof currentUser !== 'undefined' && currentUser) { %>
           <div class="nav-user-hello">
             <span class="nav-user-hello-name">Hi, <strong><%= currentUser.username %></strong></span>
             <span class="nav-user-hello-sub">Ready for your next trip?</span>
           </div>
-          <a href="/bookings"><i class="fa-solid fa-suitcase me-2"></i> <span class="text-roll" data-text-roll="My Trips">My Trips</span></a>
-          <a href="/wishlist"><i class="fa-regular fa-heart me-2"></i> <span class="text-roll" data-text-roll="Wishlist">Wishlist</span></a>
-          <a href="/change-password"><i class="fa-solid fa-key me-2"></i> <span class="text-roll" data-text-roll="Change Password">Change Password</span></a>
+          <a href="/bookings"><i class="fa-solid fa-suitcase me-2"></i> My Trips</a>
+          <a href="/wishlist"><i class="fa-regular fa-heart me-2"></i> Wishlist</a>
+          <a href="/change-password"><i class="fa-solid fa-key me-2"></i> Change Password</a>
           <hr style="margin: 0.4rem 0;" />
-          <a href="/logout"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> <span class="text-roll" data-text-roll="Log out">Log out</span></a>
+          <a href="/logout"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Log out</a>
           <% } else { %>
-          <a href="/login"><i class="fa-solid fa-right-to-bracket me-2"></i> <span class="text-roll" data-text-roll="Log in">Log in</span></a>
-          <a href="/signup"><i class="fa-solid fa-user-plus me-2"></i> <span class="text-roll" data-text-roll="Sign up">Sign up</span></a>
+          <a href="/login"><i class="fa-solid fa-right-to-bracket me-2"></i> Log in</a>
+          <a href="/signup"><i class="fa-solid fa-user-plus me-2"></i> Sign up</a>
           <% } %>
         </div>
       </div>
     </div>
   </div>
 </nav>
-
-<!-- Skiper 58: Fullscreen Centered Text Roll Navigation Overlay -->
-<div class="skiper58-overlay" id="skiper58-overlay" aria-hidden="true">
-  <div class="skiper58-panel">
-    <button class="skiper58-close" type="button" aria-label="Close navigation" data-skiper58-close>
-      <i class="fa-solid fa-xmark"></i>
-    </button>
-
-    <div class="mb-2">
-      <span class="badge bg-light text-dark border px-3 py-1.5 rounded-pill font-monospace" style="font-size: 0.75rem;">
-        Skiper 58 &bull; Text Roll Navigation
-      </span>
-    </div>
-
-    <ul class="skiper58-list">
-      <li class="skiper58-item">
-        <a href="/" data-skiper58-close>
-          <span class="skiper58-num">[0]</span>
-          <span class="skiper58-title text-roll" data-text-roll="HOME" data-center="true">HOME</span>
-        </a>
-      </li>
-      <li class="skiper58-item">
-        <a href="/listings" data-skiper58-close>
-          <span class="skiper58-num">[1]</span>
-          <span class="skiper58-title text-roll" data-text-roll="STAYS" data-center="true">STAYS</span>
-        </a>
-      </li>
-      <li class="skiper58-item">
-        <a href="/listings?category=beach" data-skiper58-close>
-          <span class="skiper58-num">[2]</span>
-          <span class="skiper58-title text-roll" data-text-roll="BEACHFRONT" data-center="true">BEACHFRONT</span>
-        </a>
-      </li>
-      <li class="skiper58-item">
-        <a href="/listings?category=amazing-views" data-skiper58-close>
-          <span class="skiper58-num">[3]</span>
-          <span class="skiper58-title text-roll" data-text-roll="MOUNTAINS" data-center="true">MOUNTAINS</span>
-        </a>
-      </li>
-      <li class="skiper58-item">
-        <a href="/listings/new" data-skiper58-close>
-          <span class="skiper58-num">[4]</span>
-          <span class="skiper58-title text-roll" data-text-roll="BECOME A HOST" data-center="true">BECOME A HOST</span>
-        </a>
-      </li>
-      <% if (typeof currentUser !== 'undefined' && currentUser) { %>
-      <li class="skiper58-item">
-        <a href="/bookings" data-skiper58-close>
-          <span class="skiper58-num">[5]</span>
-          <span class="skiper58-title text-roll" data-text-roll="MY TRIPS" data-center="true">MY TRIPS</span>
-        </a>
-      </li>
-      <li class="skiper58-item">
-        <a href="/logout" data-skiper58-close>
-          <span class="skiper58-num">[6]</span>
-          <span class="skiper58-title text-roll" data-text-roll="LOGOUT" data-center="true">LOGOUT</span>
-        </a>
-      </li>
-      <% } else { %>
-      <li class="skiper58-item">
-        <a href="/login" data-skiper58-close>
-          <span class="skiper58-num">[5]</span>
-          <span class="skiper58-title text-roll" data-text-roll="LOGIN" data-center="true">LOGIN</span>
-        </a>
-      </li>
-      <li class="skiper58-item">
-        <a href="/signup" data-skiper58-close>
-          <span class="skiper58-num">[6]</span>
-          <span class="skiper58-title text-roll" data-text-roll="SIGN UP" data-center="true">SIGN UP</span>
-        </a>
-      </li>
-      <% } %>
-    </ul>
-    <p class="text-muted small mt-3 mb-0">Hover over any item to watch characters roll</p>
-  </div>
-</div>
