@@ -1,33 +1,28 @@
 /* ==========================================================================
-   Skiper 5: "Things Drag and Scroll" Styles
-   Fluid horizontal physics scroller with momentum, grab cursors, and navigation.
+   Horizontal Scroll & Category Track Styles
+   Native, smooth, lightweight horizontal scrolling with arrow controls.
+   Zero wheel hijacking, 100% natural vertical page scrolling.
    ========================================================================== */
 
-/* Outer relative container that houses the scroller and floating navigation buttons */
 .skiper-scroll-wrapper {
   position: relative;
   width: 100%;
-  margin: 1.5rem 0 2rem;
+  margin: 1rem 0 2rem;
   padding: 0;
 }
 
-/* The horizontal physics track */
 .skiper-scroll,
 .categories-scroll {
   display: flex !important;
   gap: 1.25rem;
   overflow-x: auto !important;
   overflow-y: hidden !important;
-  scroll-behavior: auto; /* Managed by JS physics for instant drag response */
-  cursor: grab;
-  user-select: none;
-  -webkit-user-select: none;
+  scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: none !important; /* Firefox */
-  -ms-overflow-style: none !important;  /* IE / Edge */
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
   padding: 0.5rem 0.25rem 1rem !important;
   position: relative;
-  touch-action: pan-y pinch-zoom;
 }
 
 .skiper-scroll::-webkit-scrollbar,
@@ -37,46 +32,16 @@
   height: 0 !important;
 }
 
-/* Grabbing state during active pointer drag */
-.skiper-scroll.is-grabbing,
-.categories-scroll.is-grabbing {
-  cursor: grabbing !important;
-  cursor: -webkit-grabbing !important;
-  scroll-behavior: auto !important;
-}
-
-/* Prevent text selection and cursor jitter while dragging across page */
-body.skiper-active-dragging {
-  cursor: grabbing !important;
-  user-select: none !important;
-  -webkit-user-select: none !important;
-}
-
-body.skiper-active-dragging a,
-body.skiper-active-dragging button {
-  pointer-events: none !important;
-}
-
-/* Individual items inside a Skiper 5 scroll track */
 .skiper-item,
 .skiper-scroll .listing-card {
   flex: 0 0 300px;
   max-width: 320px;
-  transition: transform 0.28s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.28s ease;
-  will-change: transform;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-/* Tactile press response when grab is held */
-.skiper-scroll.is-grabbing .skiper-item,
-.skiper-scroll.is-grabbing .listing-card {
-  transform: scale(0.985);
-  transition: transform 0.1s ease-out;
-}
-
-/* Smooth hover elevation when not dragging */
-.skiper-scroll:not(.is-grabbing) .skiper-item:hover,
-.skiper-scroll:not(.is-grabbing) .listing-card:hover {
-  transform: translateY(-4px) scale(1.015);
+.skiper-scroll .listing-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
 }
 
 /* Floating Navigation Arrows */
@@ -84,19 +49,19 @@ body.skiper-active-dragging button {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 40px;
-  height: 40px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   background: #ffffff;
   color: #222222;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 20;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+  transition: all 0.2s ease;
   opacity: 1;
   visibility: visible;
   outline: none;
@@ -104,9 +69,9 @@ body.skiper-active-dragging button {
 
 .skiper-arrow:hover {
   background: #ffffff;
-  color: #18181b;
-  transform: translateY(-50%) scale(1.1);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+  color: #000000;
+  transform: translateY(-50%) scale(1.08);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
 }
 
 .skiper-arrow:active {
@@ -114,11 +79,11 @@ body.skiper-active-dragging button {
 }
 
 .skiper-arrow.skiper-prev {
-  left: -16px;
+  left: -14px;
 }
 
 .skiper-arrow.skiper-next {
-  right: -16px;
+  right: -14px;
 }
 
 .skiper-arrow.is-hidden {
@@ -128,218 +93,13 @@ body.skiper-active-dragging button {
   transform: translateY(-50%) scale(0.85);
 }
 
-/* Subtle edge fade overlays removed */
-.skiper-scroll-wrapper::before,
-.skiper-scroll-wrapper::after {
-  display: none !important;
-}
-
-/* Category pills drag-and-scroll refinement */
-.categories.skiper-scroll-wrapper {
-  margin-bottom: 1.5rem;
-}
-
-.categories.skiper-scroll-wrapper .categories-scroll {
-  padding: 0.5rem 0.25rem !important;
-}
-
-.categories-scroll .category-pill {
-  cursor: grab;
-  user-select: none;
-  -webkit-user-select: none;
-  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
-}
-
-.categories-scroll.is-grabbing .category-pill {
-  cursor: grabbing !important;
-  transform: scale(0.97);
-}
-
-
 @media (max-width: 768px) {
   .skiper-arrow {
-    display: none !important; /* Touch swipe on mobile */
-  }
-  .skiper-scroll-wrapper::before,
-  .skiper-scroll-wrapper::after {
     display: none !important;
   }
   .skiper-item,
   .skiper-scroll .listing-card {
     flex: 0 0 260px;
     max-width: 270px;
-  }
-}
-
-
-/* ==========================================================================
-   Skiper 47: 3D Perspective Coverflow Carousel (Swiper.js)
-   Exact match for skiper-ui.com/v1/skiper47 Carousel_001
-   ========================================================================== */
-
-.Carousal_001,
-.skiper47-swiper {
-  position: relative;
-  width: 100%;
-  max-width: 100%;
-  perspective: 1200px;
-  -webkit-perspective: 1200px;
-  padding-top: 1.25rem !important;
-  padding-bottom: 52px !important; /* Exact Skiper 47 padding for pagination bullets */
-  overflow: hidden !important;
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-.skiper47-container {
-  position: relative;
-  width: 100%;
-  max-width: 880px; /* Exact match for Skiper 47 w-3xl centered perspective carousel */
-  margin: 0.75rem auto 2.25rem;
-}
-
-.skiper47-slide {
-  height: auto !important;
-  display: flex !important;
-  justify-content: center;
-  align-items: center;
-  box-sizing: border-box;
-}
-
-/* Base card styling inside Skiper 47 slide */
-.skiper47-card {
-  width: 100% !important;
-  max-width: 460px !important;
-  margin: 0 auto;
-  border-radius: var(--radius-lg, 16px) !important;
-  overflow: hidden;
-  background: #ffffff;
-  border: 1px solid var(--border-soft, #e2e8f0);
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
-  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s ease, border-color 0.3s ease;
-  display: flex;
-  flex-direction: column;
-}
-
-.skiper47-card .card-media {
-  position: relative;
-  width: 100%;
-  height: 270px !important;
-  overflow: hidden;
-  background: #f1f5f9;
-}
-
-.skiper47-card .card-media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
-  display: block;
-}
-
-.skiper47-card:hover .card-media img {
-  transform: scale(1.05);
-}
-
-/* Perspective Coverflow active vs inactive slide states */
-.swiper-slide-active .skiper47-card {
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.14) !important;
-  border-color: rgba(0, 0, 0, 0.12);
-  transform: scale(1);
-  opacity: 1;
-}
-
-.swiper-slide:not(.swiper-slide-active) {
-  opacity: 0.65;
-  filter: contrast(0.95);
-  transition: opacity 0.4s ease, filter 0.4s ease;
-}
-
-.swiper-slide:not(.swiper-slide-active):hover {
-  opacity: 0.9;
-}
-
-/* Navigation Buttons (Floating Circular Chevrons) */
-.skiper47-btn {
-  width: 44px !important;
-  height: 44px !important;
-  border-radius: 50% !important;
-  background: #ffffff !important;
-  color: #18181b !important;
-  border: 1px solid rgba(0, 0, 0, 0.08) !important;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.14) !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  cursor: pointer !important;
-  z-index: 30 !important;
-  top: 45% !important;
-  transform: translateY(-50%) !important;
-  transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.2s ease, box-shadow 0.2s ease !important;
-}
-
-.skiper47-btn::after {
-  display: none !important; /* Hide Swiper default text chevron */
-}
-
-.skiper47-btn i {
-  font-size: 0.95rem;
-  color: #18181b;
-}
-
-.skiper47-btn:hover {
-  background: #ffffff !important;
-  transform: translateY(-50%) scale(1.1) !important;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2) !important;
-}
-
-.skiper47-btn-prev {
-  left: 10px !important;
-}
-
-.skiper47-btn-next {
-  right: 10px !important;
-}
-
-.swiper-button-disabled.skiper47-btn {
-  opacity: 0 !important;
-  pointer-events: none !important;
-  visibility: hidden;
-}
-
-/* Pagination Dots (Skiper 47 Dots) */
-.skiper47-pagination {
-  bottom: 8px !important;
-  display: flex !important;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-.skiper47-pagination .swiper-pagination-bullet {
-  width: 8px;
-  height: 8px;
-  background: #cbd5e1;
-  opacity: 1;
-  border-radius: 9999px;
-  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-  margin: 0 !important;
-  cursor: pointer;
-}
-
-.skiper47-pagination .swiper-pagination-bullet-active {
-  width: 24px;
-  height: 8px;
-  background: #0284c7; /* Skiper 47 active indicator accent */
-  border-radius: 9999px;
-}
-
-@media (max-width: 768px) {
-  .skiper47-card .card-media {
-    height: 220px !important;
-  }
-  .skiper47-btn {
-    width: 38px !important;
-    height: 38px !important;
   }
 }

@@ -2,10 +2,7 @@
   <button class="skiper-arrow skiper-prev is-hidden" type="button" aria-label="Scroll categories left">
     <i class="fa-solid fa-chevron-left"></i>
   </button>
-  <div class="categories-scroll skiper-scroll unlumen-highlight-track" id="category-scroll" data-skiper-scroll data-unlumen-highlight>
-    <!-- Unlumen UI: Single Floating Spring Animated Highlight Pill -->
-    <div class="unlumen-highlight-pill" id="category-highlight-pill" aria-hidden="true"></div>
-
+  <div class="categories-scroll skiper-scroll" id="category-scroll" data-skiper-scroll>
     <a href="/listings" class="category-pill <%= (typeof selectedCategory === 'undefined' || !selectedCategory || selectedCategory === 'all') ? 'active' : '' %>" data-category="all">
       <span class="cat-emoji">🌐</span>
       <span class="cat-label">All Stays</span>
@@ -39,3 +36,69 @@
     <i class="fa-solid fa-chevron-right"></i>
   </button>
 </div>
+
+<style>
+  .categories {
+    position: relative;
+    padding: 0.5rem 0 1rem;
+  }
+  .categories-scroll {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    overflow-x: auto;
+    padding: 0.5rem 0.25rem 0.75rem;
+    scrollbar-width: none;
+  }
+  .categories-scroll::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Modern Glassmorphic Pill Design */
+  .category-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: var(--text, #222222);
+    font-size: 0.84rem;
+    font-weight: 600;
+    white-space: nowrap;
+    padding: 0.55rem 1.1rem;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04), inset 0 1px 1px rgba(255, 255, 255, 0.8);
+    transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+    cursor: pointer;
+  }
+  
+  .category-pill:hover {
+    color: #18181b;
+    background: #f4f4f5;
+    border-color: #d4d4d8;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    transform: translateY(-2px);
+  }
+  
+  .category-pill.active {
+    color: #ffffff;
+    background: #18181b;
+    border-color: #18181b;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-1px);
+  }
+  
+  .cat-emoji {
+    font-size: 1.15rem;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    transition: transform 0.2s ease;
+  }
+  .category-pill:hover .cat-emoji {
+    transform: scale(1.15);
+  }
+</style>
