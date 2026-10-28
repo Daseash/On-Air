@@ -4,31 +4,24 @@
     <div class="unlumen-highlight-pill" id="category-highlight-pill" aria-hidden="true"></div>
 
     <a href="/listings" class="category-pill <%= (typeof selectedCategory === 'undefined' || !selectedCategory || selectedCategory === 'all') ? 'active' : '' %>" data-category="all">
-      <span class="cat-emoji">🌐</span>
       <span class="cat-label">All Stays</span>
     </a>
     <a href="/listings?category=beach" class="category-pill <%= (typeof selectedCategory !== 'undefined' && selectedCategory === 'beach') ? 'active' : '' %>" data-category="beach">
-      <span class="cat-emoji">🏖️</span>
       <span class="cat-label">Beachfront</span>
     </a>
     <a href="/listings?category=amazing-views" class="category-pill <%= (typeof selectedCategory !== 'undefined' && selectedCategory === 'amazing-views') ? 'active' : '' %>" data-category="amazing-views">
-      <span class="cat-emoji">🌄</span>
       <span class="cat-label">Amazing Views</span>
     </a>
     <a href="/listings?category=trending" class="category-pill <%= (typeof selectedCategory !== 'undefined' && selectedCategory === 'trending') ? 'active' : '' %>" data-category="trending">
-      <span class="cat-emoji">🔥</span>
       <span class="cat-label">Trending</span>
     </a>
     <a href="/listings?category=cabin" class="category-pill <%= (typeof selectedCategory !== 'undefined' && selectedCategory === 'cabin') ? 'active' : '' %>" data-category="cabin">
-      <span class="cat-emoji">🪵</span>
       <span class="cat-label">Cabins</span>
     </a>
     <a href="/listings?category=city" class="category-pill <%= (typeof selectedCategory !== 'undefined' && selectedCategory === 'city') ? 'active' : '' %>" data-category="city">
-      <span class="cat-emoji">🏙️</span>
       <span class="cat-label">Iconic Cities</span>
     </a>
     <a href="/listings?category=luxury" class="category-pill <%= (typeof selectedCategory !== 'undefined' && selectedCategory === 'luxury') ? 'active' : '' %>" data-category="luxury">
-      <span class="cat-emoji">💎</span>
       <span class="cat-label">Luxury</span>
     </a>
   </div>
