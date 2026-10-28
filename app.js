@@ -102,30 +102,34 @@ passport.deserializeUser(User.deserializeUser());
 app.use(attachCsrf);
 app.use(csrfProtect);
 
-// 4K Ultra-High Definition Image Resolution Optimizer Helper
-const to4k = (img) => {
+// Ultra-Fast Web-Optimized Image Resolution Helper
+const optimizeImage = (img, width = 640, quality = 75) => {
   let url = typeof img === "string" ? img : (img && img.url ? img.url : "");
-  if (!url) return "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=3840&q=90";
+  if (!url) return `https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=${width}&q=${quality}`;
   if (url.includes("images.unsplash.com") || url.includes("plus.unsplash.com")) {
-    let upgraded = url.replace(/w=\d+/g, "w=3840").replace(/q=\d+/g, "q=90");
-    if (!upgraded.includes("w=3840")) {
-      upgraded += (upgraded.includes("?") ? "&" : "?") + "auto=format&fit=crop&w=3840&q=90";
+    let optimized = url.replace(/w=\d+/g, `w=${width}`).replace(/q=\d+/g, `q=${quality}`);
+    if (!optimized.includes("auto=format")) {
+      optimized += (optimized.includes("?") ? "&" : "?") + `auto=format&fit=crop&w=${width}&q=${quality}`;
     }
-    return upgraded;
+    return optimized;
   }
   if (url.includes("res.cloudinary.com") && url.includes("/upload/")) {
     if (!url.includes("/w_") && !url.includes("/q_")) {
-      return url.replace("/upload/", "/upload/w_3840,c_limit,q_auto:best,f_auto/");
+      return url.replace("/upload/", `/upload/c_limit,w_${width},q_auto,f_auto/`);
     }
   }
   return url;
 };
+
+// Aliased to optimizeImage for backwards compatibility (defaults to crisp 1080px for hero views)
+const to4k = (img) => optimizeImage(img, 1080, 80);
 
 // Store Session & Flash Info in res.locals Middleware
 app.use(async (req, res, next) => {
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
   res.locals.to4k = to4k;
+  res.locals.optimizeImage = optimizeImage;
 
   if (req.user) {
     res.locals.currentUser = req.user;

@@ -14,26 +14,35 @@ const listingSchema = new schema({
     url: {
       type: String,
       default:
-        "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=3840&q=90",
+        "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=640&q=75",
       set: (v) => {
         if (!v || v === "") {
-          return "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=3840&q=90";
+          return "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=640&q=75";
         }
         if (typeof v === "string" && (v.includes("images.unsplash.com") || v.includes("plus.unsplash.com"))) {
-          return v.replace(/w=\d+/g, "w=3840").replace(/q=\d+/g, "q=90");
+          let u = v.replace(/w=\d+/g, "w=640").replace(/q=\d+/g, "q=75");
+          if (!u.includes("auto=format")) {
+            u += (u.includes("?") ? "&" : "?") + "auto=format&fit=crop&w=640&q=75";
+          }
+          return u;
         }
         return v;
       },
       get: (v) => {
         if (!v) {
-          return "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=3840&q=90";
+          return "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=640&q=75";
         }
         if (typeof v === "string" && (v.includes("images.unsplash.com") || v.includes("plus.unsplash.com"))) {
-          let u = v.replace(/w=\d+/g, "w=3840").replace(/q=\d+/g, "q=90");
-          if (!u.includes("w=3840")) {
-            u += (u.includes("?") ? "&" : "?") + "auto=format&fit=crop&w=3840&q=90";
+          let u = v.replace(/w=\d+/g, "w=640").replace(/q=\d+/g, "q=75");
+          if (!u.includes("auto=format")) {
+            u += (u.includes("?") ? "&" : "?") + "auto=format&fit=crop&w=640&q=75";
           }
           return u;
+        }
+        if (typeof v === "string" && v.includes("res.cloudinary.com") && v.includes("/upload/")) {
+          if (!v.includes("/w_") && !v.includes("/q_")) {
+            return v.replace("/upload/", "/upload/c_fill,w_640,q_auto:good,f_auto/");
+          }
         }
         return v;
       },
