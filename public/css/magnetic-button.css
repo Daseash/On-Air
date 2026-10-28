@@ -1,0 +1,87 @@
+/* ==========================================================================
+   Unlumen UI: Magnetic Button Physics & Interaction Styles
+   Exact recreation of @unlumen-ui/magnetic-button
+   ========================================================================== */
+
+.magnetic-btn,
+[data-magnetic],
+.btn,
+.nav-skiper58-trigger,
+.nav-menu-btn,
+.nav-icon-btn,
+.nav-host-link,
+.hs-submit,
+.skiper47-btn,
+.wishlist-btn,
+.skiper58-close-btn,
+.rag-chat-pill,
+.rag-chat-fab,
+#nav-search-btn {
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  transition: box-shadow 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
+              background-color 0.2s ease,
+              border-color 0.2s ease,
+              color 0.2s ease;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: pointer;
+}
+
+/* Subtle magnetic elevation when hovering */
+.btn:hover,
+.nav-skiper58-trigger:hover,
+.hs-submit:hover,
+.skiper47-btn:hover,
+.rag-chat-pill:hover,
+.rag-chat-fab:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16) !important;
+}
+
+/* Tactile press response */
+.btn:active,
+.magnetic-btn:active,
+.nav-skiper58-trigger:active,
+.nav-menu-btn:active,
+.hs-submit:active,
+.skiper47-btn:active,
+.wishlist-btn:active,
+.skiper58-close-btn:active {
+  transform: scale(0.95) !important;
+  transition: transform 0.1s ease-out !important;
+}
+
+/* Inner label parallax support */
+.magnetic-inner {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: inherit;
+  pointer-events: none;
+  will-change: transform;
+  transition: transform 0.15s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Variant styles for custom magnetic buttons matching Unlumen UI demo */
+.magnetic-btn--gradient {
+  background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%) !important;
+  color: #ffffff !important;
+  border: none !important;
+  box-shadow: 0 4px 18px rgba(236, 72, 153, 0.35) !important;
+}
+
+.magnetic-btn--gradient:hover {
+  box-shadow: 0 8px 28px rgba(236, 72, 153, 0.5) !important;
+}
+
+.magnetic-btn--dark {
+  background: #0f172a !important;
+  color: #f8fafc !important;
+  border: 1px solid #1e293b !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25) !important;
+}
+
+.magnetic-btn--dark:hover {
+  background: #1e293b !important;
+  border-color: #334155 !important;
+}
